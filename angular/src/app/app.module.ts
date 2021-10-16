@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
 import { SharedModule } from '@shared/shared.module';
+
 import { HomeComponent } from '@app/home/home.component';
 import { AboutComponent } from '@app/about/about.component';
 // tenants
@@ -38,7 +39,7 @@ import { SidebarComponent } from './layout/sidebar.component';
 import { SidebarLogoComponent } from './layout/sidebar-logo.component';
 import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component';
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
-import {ApplicationComponent} from './Application/Application.component';
+import { ApplicationComponent } from './Application/Application.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,11 @@ import {ApplicationComponent} from './Application/Application.component';
     SidebarComponent,
     SidebarLogoComponent,
     SidebarUserPanelComponent,
-    SidebarMenuComponent
+    SidebarMenuComponent,
+
+    //Application
+    ApplicationComponent
+
   ],
   imports: [
     CommonModule,
@@ -97,7 +102,6 @@ import {ApplicationComponent} from './Application/Application.component';
     CreateUserDialogComponent,
     EditUserDialogComponent,
     ResetPasswordDialogComponent,
-    ApplicationComponent
   ],
 })
-export class AppModule {}
+export class AppModule { }
