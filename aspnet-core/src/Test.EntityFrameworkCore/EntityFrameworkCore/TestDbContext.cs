@@ -3,6 +3,7 @@ using Abp.Zero.EntityFrameworkCore;
 using Test.Authorization.Roles;
 using Test.Authorization.Users;
 using Test.MultiTenancy;
+using Test.Forms;
 
 namespace Test.EntityFrameworkCore
 {
@@ -10,9 +11,13 @@ namespace Test.EntityFrameworkCore
     {
         /* Define a DbSet for each entity of the application */
         
+
         public TestDbContext(DbContextOptions<TestDbContext> options)
             : base(options)
         {
         }
+
+        public virtual DbSet<Form> BinaryObjects { get; set; }
+
     }
 }
