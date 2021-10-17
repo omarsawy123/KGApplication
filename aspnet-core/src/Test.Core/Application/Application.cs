@@ -45,6 +45,11 @@ namespace Test.Forms
         [Required]
         public long StudentNationalId { get; set; }
 
+        public bool HasRelatives { get; set; }
+        public bool MotherSchoolGraduate { get; set; }
+
+        public string MotherGraduationYear { get; set; }
+
         public string StudentRelativeName { get; set; }
         public string StudentRelativeGrade { get; set; }
         public string JoiningSchool { get; set; }

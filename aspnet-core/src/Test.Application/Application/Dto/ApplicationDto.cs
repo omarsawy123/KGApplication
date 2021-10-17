@@ -41,7 +41,10 @@ namespace Test.Dto.Forms
         
         public string Email { get; set; }
 
-        
+        public bool HasRelatives { get; set; }
+        public bool MotherSchoolGraduate { get; set; }
+        public string MotherGraduationYear { get; set; }
+
         public long StudentNationalId { get; set; }
 
         public string StudentRelativeName { get; set; }

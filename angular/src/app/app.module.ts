@@ -12,6 +12,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
 import { SharedModule } from '@shared/shared.module';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
 
 import { HomeComponent } from '@app/home/home.component';
 import { AboutComponent } from '@app/about/about.component';
@@ -89,6 +91,7 @@ import { ApplicationComponent } from './Application/Application.component';
     ServiceProxyModule,
     SharedModule,
     NgxPaginationModule,
+    BsDatepickerModule.forRoot(),
   ],
   providers: [],
   entryComponents: [

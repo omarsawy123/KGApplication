@@ -2377,6 +2377,9 @@ export class FormDto implements IFormDto {
     motherMobile: string | undefined;
     telephone: string | undefined;
     email: string | undefined;
+    hasRelatives: boolean;
+    motherSchoolGraduate: boolean;
+    motherGraduationYear: string | undefined;
     studentNationalId: number;
     studentRelativeName: string | undefined;
     studentRelativeGrade: string | undefined;
@@ -2405,6 +2408,9 @@ export class FormDto implements IFormDto {
             this.motherMobile = _data["motherMobile"];
             this.telephone = _data["telephone"];
             this.email = _data["email"];
+            this.hasRelatives = _data["hasRelatives"];
+            this.motherSchoolGraduate = _data["motherSchoolGraduate"];
+            this.motherGraduationYear = _data["motherGraduationYear"];
             this.studentNationalId = _data["studentNationalId"];
             this.studentRelativeName = _data["studentRelativeName"];
             this.studentRelativeGrade = _data["studentRelativeGrade"];
@@ -2433,6 +2439,9 @@ export class FormDto implements IFormDto {
         data["motherMobile"] = this.motherMobile;
         data["telephone"] = this.telephone;
         data["email"] = this.email;
+        data["hasRelatives"] = this.hasRelatives;
+        data["motherSchoolGraduate"] = this.motherSchoolGraduate;
+        data["motherGraduationYear"] = this.motherGraduationYear;
         data["studentNationalId"] = this.studentNationalId;
         data["studentRelativeName"] = this.studentRelativeName;
         data["studentRelativeGrade"] = this.studentRelativeGrade;
@@ -2461,6 +2470,9 @@ export interface IFormDto {
     motherMobile: string | undefined;
     telephone: string | undefined;
     email: string | undefined;
+    hasRelatives: boolean;
+    motherSchoolGraduate: boolean;
+    motherGraduationYear: string | undefined;
     studentNationalId: number;
     studentRelativeName: string | undefined;
     studentRelativeGrade: string | undefined;
