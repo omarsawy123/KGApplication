@@ -21,6 +21,7 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     model: FormDto = new FormDto();
     ApplicationForm: FormGroup;
     datePickerConfig: Partial<BsDatepickerConfig>;
+    chooseDate: boolean = false;
 
     constructor(inject: Injector, private fb: FormBuilder, private _services: FormServiceProxy) {
         super(inject);
@@ -181,8 +182,8 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
         // moment(this.activity_Form.get('startDate').value).add(diff, 'minutes');
         this.model.studentBirthDate = moment(this.ApplicationForm.controls.studentBirthDate.value).add(diff, 'minutes');
         this.model.studentReligion = this.ApplicationForm.controls.studentReligion.value;
-        this.model.fatherMobile=this.ApplicationForm.controls.fatherMobile.value;
-        this.model.motherMobile=this.ApplicationForm.controls.motherMobile.value;
+        this.model.fatherMobile = this.ApplicationForm.controls.fatherMobile.value;
+        this.model.motherMobile = this.ApplicationForm.controls.motherMobile.value;
         this.model.fatherJob = this.ApplicationForm.controls.fatherJob.value;
         this.model.motherJob = this.ApplicationForm.controls.motherJob.value;
         this.model.telephone = this.ApplicationForm.controls.telephone.value;
