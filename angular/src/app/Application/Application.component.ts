@@ -5,7 +5,25 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { FormDto, FormServiceProxy } from '@shared/service-proxies/service-proxies';
 import * as moment from 'moment';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/bs-datepicker.config';
+import { TimepickerConfig } from 'ngx-bootstrap/timepicker';
 
+// export function getTimepickerConfig(): TimepickerConfig {
+
+
+//     return Object.assign(new TimepickerConfig(), {
+//         hourStep: 1,
+//         minuteStep: 5,
+//         showMeridian: false,
+//         readonlyInput: false,
+//         mousewheel: true,
+//         showMinutes: true,
+//         showSeconds: false,
+//         labelHours: 'Hours',
+//         labelMinutes: 'Minutes',
+//         labelSeconds: 'Seconds',
+//         allowEmptyTime: true,
+//     });
+// }
 
 @Component({
     selector: 'AppReg',
@@ -21,16 +39,38 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     model: FormDto = new FormDto();
     ApplicationForm: FormGroup;
     datePickerConfig: Partial<BsDatepickerConfig>;
+    timePickerConfig: Partial<TimepickerConfig>;
+    timeList: any;
+
     chooseDate: boolean = false;
+    time: Date = new Date();
+    minTime: Date = new Date();
+    maxTime: Date = new Date();
+
+    enabledDates = [
+        new Date('2021-10-19'),
+        new Date('2021-10-20'),
+        new Date('2021-10-21'),
+    ]
+
+
+
 
     constructor(inject: Injector, private fb: FormBuilder, private _services: FormServiceProxy) {
         super(inject);
+
+
 
         this.datePickerConfig = Object.assign({}, {
             containerClass: 'theme-dark-blue',
             dateInputFormat: 'DD/MM/YYYY',
             isAnimated: true,
         });
+        // this.timePickerConfig = Object.assign({
+        //     showMeridian: false,
+        //     min: this.minTime,
+        //     max: this.maxTime,
+        // })
     }
 
 
@@ -56,6 +96,8 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
             studentRelativeGrade: [''],
             joiningSchool: ['', Validators.required],
         })
+
+        // this.time = void 0;
 
     }
 
@@ -88,6 +130,12 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
         )
     }
 
+
+    dateChanged(val: Date) {
+
+
+        console.log(val.toLocaleDateString());
+    }
 
     checkValidation() {
 

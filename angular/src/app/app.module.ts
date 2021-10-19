@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
 import { SharedModule } from '@shared/shared.module';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 
 
 import { HomeComponent } from '@app/home/home.component';
@@ -91,6 +92,7 @@ import { ApplicationComponent } from './Application/Application.component';
     ServiceProxyModule,
     SharedModule,
     NgxPaginationModule,
+    TimepickerModule.forRoot(),
     BsDatepickerModule.forRoot(),
   ],
   providers: [],

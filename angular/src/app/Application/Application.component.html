@@ -174,14 +174,29 @@
                                 </div>
                                 <div *ngIf="chooseDate">
                                     <div class="pr-3 pb-3 pe-3 w-auto">
-                                        <bs-datepicker-inline [bsValue]="bsInlineValue"></bs-datepicker-inline>
+                                        <bs-datepicker-inline [bsValue]="bsInlineValue"
+                                            (bsValueChange)="dateChanged($event)" [datesEnabled]="enabledDates">
+                                        </bs-datepicker-inline>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <div class="col-md-3">
+                                            <select [ngModelOptions]="{standalone: true}" [(ngModel)]="timeList"
+                                                class="form-control">
+                                                <option *ngFor="let time of timeList">{{time}}</option>
+                                            </select>
+                                        </div>
+                                        <!-- <timepicker [ngModelOptions]="{standalone: true}" [min]="minTime"
+                                            [max]="maxTime" [(ngModel)]="time">
+                                        </timepicker>
+                                        <pre class="alert alert-info"
+                                            [class.alert-danger]="time>12">Time is: {{time}}</pre> -->
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <button class="btn btn-primary" *ngIf="!chooseDate"
+                                        <button class="btn btn-primary" type="button" *ngIf="!chooseDate"
                                             (click)="chooseDate=true">Next</button>
-                                        <button class="btn btn-primary" style="margin-right: 5px;" *ngIf="chooseDate"
+                                        <button class="btn btn-primary" type="button" style="margin-right: 10px;" *ngIf="chooseDate"
                                             (click)="chooseDate=false">Back</button>
 
                                         <button *ngIf="chooseDate" class="btn btn-success"
