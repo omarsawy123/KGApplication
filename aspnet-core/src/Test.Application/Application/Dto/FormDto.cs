@@ -3,7 +3,9 @@ using Abp.AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Test.Dates;
 using Test.Forms;
+using Test.TimesTables;
 
 namespace Test.Dto.Forms
 {
@@ -50,6 +52,9 @@ namespace Test.Dto.Forms
         public string StudentRelativeName { get; set; }
         public string StudentRelativeGrade { get; set; }
         public string JoiningSchool { get; set; }
+
+        public long DateId { get; set; }
+        public long TimeId { get; set; }
 
         public int TenantId { get; set; }
 

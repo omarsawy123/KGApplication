@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Test.EntityFrameworkCore;
 
 namespace Test.Migrations
 {
     [DbContext(typeof(TestDbContext))]
-    partial class TestDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211019120309_Dates & times tables")]
+    partial class Datestimestables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1318,6 +1320,9 @@ namespace Test.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ApplicationId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
@@ -1332,9 +1337,6 @@ namespace Test.Migrations
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("FormId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -1353,9 +1355,9 @@ namespace Test.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DateId");
+                    b.HasIndex("ApplicationId");
 
-                    b.HasIndex("FormId");
+                    b.HasIndex("DateId");
 
                     b.HasIndex("TimeId");
 
@@ -1982,13 +1984,13 @@ namespace Test.Migrations
 
             modelBuilder.Entity("Test.ApplicationTimeDates.ApplicationTimeDate", b =>
                 {
+                    b.HasOne("Test.ApplicationTimeDates.ApplicationTimeDate", "ApplicationFk")
+                        .WithMany()
+                        .HasForeignKey("ApplicationId");
+
                     b.HasOne("Test.Dates.Date", "DateFk")
                         .WithMany()
                         .HasForeignKey("DateId");
-
-                    b.HasOne("Test.Forms.Form", "FormFk")
-                        .WithMany()
-                        .HasForeignKey("FormId");
 
                     b.HasOne("Test.TimesTables.TimesTable", "TimeFk")
                         .WithMany()

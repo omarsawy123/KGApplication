@@ -4,6 +4,9 @@ using Test.Authorization.Roles;
 using Test.Authorization.Users;
 using Test.MultiTenancy;
 using Test.Forms;
+using Test.Dates;
+using Test.TimesTables;
+using Test.ApplicationTimeDates;
 
 namespace Test.EntityFrameworkCore
 {
@@ -17,7 +20,12 @@ namespace Test.EntityFrameworkCore
         {
         }
 
-        public virtual DbSet<Form> BinaryObjects { get; set; }
+        public virtual DbSet<Form> Forms { get; set; }
+        public virtual DbSet<Date> Dates { get; set; }
+        public virtual DbSet<TimesTable> TimesTables { get; set; }
+        public virtual DbSet<ApplicationTimeDate> ApplicationTimeDates { get; set; }
+
+
 
     }
 }
