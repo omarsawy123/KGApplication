@@ -17,6 +17,8 @@ namespace Test.TimesTables
         [Required]
         public DateTime TimeValue { get; set; }
 
+        public bool IsEnabled { get; set; }
+
         public int TenantId { get; set; }
 
 

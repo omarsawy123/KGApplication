@@ -10,7 +10,7 @@ namespace Test.Dates
 {
     [Table("Dates")]
 
-    public class Date:FullAuditedEntity, IMustHaveTenant
+    public class DatesTable:FullAuditedEntity, IMustHaveTenant
     {
 
         [Required]
@@ -22,7 +22,7 @@ namespace Test.Dates
         public bool IsStartDate { get; set; }
         public bool IsEndDate { get; set; }
 
-
+        public bool IsEnabled { get; set; }
         public int TenantId { get; set; }
 
 

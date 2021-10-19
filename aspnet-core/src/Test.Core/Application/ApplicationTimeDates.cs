@@ -19,7 +19,7 @@ namespace Test.ApplicationTimeDates
         public Form FormFk { get; set; }
 
         [ForeignKey("DateId")]
-        public Date DateFk { get; set; }
+        public DatesTable DateFk { get; set; }
 
         [ForeignKey("TimeId")]
         public TimesTable TimeFk { get; set; }

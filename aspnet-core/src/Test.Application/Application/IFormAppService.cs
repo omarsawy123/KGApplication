@@ -4,6 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Test.Application.Dto;
+using Test.Dates;
+using Test.Dto.Dates;
 using Test.Dto.Forms;
 
 namespace Test.Forms
@@ -12,5 +15,8 @@ namespace Test.Forms
     {
         Task<FormDto> GetForm(NullableIdDto input);
         Task CreateForm(FormDto input);
+        Task<List<TimeTableDto>> GetAllTimes();
+
+         Task<List<DatesDto>> GetAllDates();
     }
 }

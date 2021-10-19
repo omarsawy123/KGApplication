@@ -15,6 +15,9 @@ namespace Test.Application.Dto
 
         public DateTime TimeValue { get; set; }
 
+        public bool IsEnabled { get; set; }
+
+
         public int TenantId { get; set; }
     }
 }

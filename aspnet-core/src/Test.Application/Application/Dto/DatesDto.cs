@@ -7,7 +7,7 @@ using Test.Dates;
 
 namespace Test.Dto.Dates
 {
-    [AutoMap(typeof(Date))]
+    [AutoMap(typeof(DatesTable))]
 
     public class DatesDto : EntityDto
     {
@@ -17,6 +17,7 @@ namespace Test.Dto.Dates
 
         public bool IsStartDate { get; set; }
         public bool IsEndDate { get; set; }
+        public bool IsEnabled { get; set; }
 
 
         public int TenantId { get; set; }

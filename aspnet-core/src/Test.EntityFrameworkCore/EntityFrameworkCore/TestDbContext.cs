@@ -21,7 +21,7 @@ namespace Test.EntityFrameworkCore
         }
 
         public virtual DbSet<Form> Forms { get; set; }
-        public virtual DbSet<Date> Dates { get; set; }
+        public virtual DbSet<DatesTable> Dates { get; set; }
         public virtual DbSet<TimesTable> TimesTables { get; set; }
         public virtual DbSet<ApplicationTimeDate> ApplicationTimeDates { get; set; }
 
