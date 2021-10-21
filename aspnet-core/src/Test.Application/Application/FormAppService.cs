@@ -113,11 +113,28 @@ namespace Test.Forms
 
         }
 
-        public async Task<List<TimeTableDto>> GetAllTimes(int dateId)
+        public async  Task<List<TimesTable>> GetAllTimes(int dateId)
         {
-            var subselect = (from ap in _appRepository.GetAll().Where(a=>a.DateFk.Id==dateId) select ap.TimeFk.Id).ToList();
 
-            var result = await (from tm in _timeRepository.GetAll() where !subselect.Contains(tm.Id) select tm).ToListAsync();
+            var subselect = (from ap in _appRepository.GetAll().Where(a => a.DateFk.Id == dateId) select ap.TimeFk.Id).ToList();
+
+            if (subselect.Count > 0)
+            {
+
+                var result =  _timeRepository.GetAll();
+                foreach (var res in result)
+                {
+                    if (subselect.Contains(res.Id))
+                    {
+                        res.IsEnabled = false;
+                    }
+                }
+
+                //var result = await (from tm in _timeRepository.GetAll() where !subselect.Contains(tm.Id) select tm).ToListAsync();
+                return await result.ToListAsync();
+
+            }
+            return new List<TimesTable>();
 
             //var query = await (from ap in _appRepository.GetAll().Where(d => d.DateFk.Id == dateId)
             //                   join tm in _timeRepository.GetAll() on ap.TimeFk.Id equals tm.Id into times
@@ -137,7 +154,6 @@ namespace Test.Forms
             //           ).ToListAsync();
 
 
-            return ObjectMapper.Map<List<TimeTableDto>>(result);
 
         }
 

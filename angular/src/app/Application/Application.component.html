@@ -174,15 +174,19 @@
                                 </div>
                                 <div *ngIf="chooseDate">
                                     <div class="pr-3 pb-3 pe-3 w-auto">
-                                        <bs-datepicker-inline [bsValue]="bsInlineValue"
-                                            (bsValueChange)="dateChanged($event)" [datesEnabled]="enabledDates">
+                                        <!-- <input class="form-control" formControlName="formDate" bsDatepicker
+                                            (bsValueChange)="dateChanged($event)" [datesEnabled]="enabledDates"> -->
+                                        <bs-datepicker-inline (bsValue)="bsInlineValue" [datesEnabled]="enabledDates">
                                         </bs-datepicker-inline>
+                                        <button (click)="dateChanged()" type="button">Check Time</button>
+
                                     </div>
                                     <div class="row" style="margin-bottom: 5px;">
-                                        <div class="col-md-3" *ngIf="!loading">
-                                            <select class="form-control" formControlName="formTime">
-                                                <option *ngFor="let time of timesTable" [value]="time.id">
-                                                    {{time.timeName}}</option>
+                                        <div class="col-md-3">
+                                            <select class="form-control" id="timeList" formControlName="formTime">
+                                                <option *ngFor="let tm of timeList">
+                                                    {{tm.timeName}}
+                                                </option>
                                             </select>
                                         </div>
                                         <!-- <timepicker [ngModelOptions]="{standalone: true}" [min]="minTime"

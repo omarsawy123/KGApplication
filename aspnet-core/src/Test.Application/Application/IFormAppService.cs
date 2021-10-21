@@ -8,6 +8,7 @@ using Test.Application.Dto;
 using Test.Dates;
 using Test.Dto.Dates;
 using Test.Dto.Forms;
+using Test.TimesTables;
 
 namespace Test.Forms
 {
@@ -15,7 +16,7 @@ namespace Test.Forms
     {
         Task<FormDto> GetForm(NullableIdDto input);
         Task CreateForm(FormDto input);
-        Task<List<TimeTableDto>> GetAllTimes(int dateId);
+        Task<List<TimesTable>> GetAllTimes(int dateId);
 
          Task<List<DatesDto>> GetAllDates();
     }

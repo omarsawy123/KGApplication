@@ -1,12 +1,15 @@
-import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
-import { DatesDto, FormDto, FormServiceProxy, TimeTableDto } from '@shared/service-proxies/service-proxies';
+import { DatesDto, FormDto, FormServiceProxy } from '@shared/service-proxies/service-proxies';
+import { result } from 'lodash';
 import * as moment from 'moment';
+import { getDate } from 'ngx-bootstrap/chronos/utils/date-getters';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/bs-datepicker.config';
 import { TimepickerConfig } from 'ngx-bootstrap/timepicker';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { finalize } from 'rxjs/operators';
 
 // export function getTimepickerConfig(): TimepickerConfig {
 
@@ -41,15 +44,18 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     ApplicationForm: FormGroup;
     datePickerConfig: Partial<BsDatepickerConfig>;
     timePickerConfig: Partial<TimepickerConfig>;
-    timeList: any;
+    timeList;
+
+    @ViewChild('microwaveRef') microwaveElement: ElementRef;
 
     chooseDate: boolean = false;
     time: Date = new Date();
     minTime: Date = new Date();
     maxTime: Date = new Date();
+    bsInlineValue;
+
 
     enabledDates = [];
-    timesTable: any;
     Dates: DatesDto[] = [];
     loading: boolean = true;
 
@@ -100,22 +106,20 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
             studentRelativeGrade: [''],
             joiningSchool: ['', Validators.required],
             formTime: [''],
+            formDate: [''],
         })
 
         this._services.getAllDates().subscribe((result) => {
             this.Dates = result;
             this.Dates.forEach((dt) => {
-                // dt.dateValue.toDate().setHours(0, 0, 0, 0);
                 if (dt.isEnabled) this.enabledDates.push(dt.dateValue.toDate())
             })
-            this._services.getAllTimes(this.Dates[0].id).subscribe((result) => {
-                this.timesTable = result;
+            // this._services.getAllTimes(this.Dates[0].id).subscribe((result) => {
+            //     this.timeList = result;
+            //     this.bsInlineValue = this.Dates[0].dateValue.toDate();
 
-            })
-            console.log(this.Dates);
+            // })
         })
-
-        // this.time = void 0;
 
     }
 
@@ -149,28 +153,18 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     }
 
 
-    dateChanged(val: Date) {
 
-        // console.log(this.Dates[0].dateValue.toDate().toLocaleDateString());
-        // console.log(val.toLocaleDateString());
+    async dateChanged() {
 
-        // console.log(this.Dates[0].dateValue.toDate().toLocaleDateString() == val.toLocaleDateString())
-        this.loading = true;
+        let d = this.Dates.find(d => d.dateValue.toDate().toLocaleDateString() == this.bsInlineValue.toLocaleDateString())
 
-        let date = this.Dates.find(d => d.dateValue.toDate().toLocaleDateString() == val.toLocaleDateString());
-
-        if (date) {
-            console.log(date.id);
-            this._services.getAllTimes(date.id).subscribe((result) => {
-                this.timesTable = [];
-                this.timesTable = result;
-                this.loading = false;
-            })
-        }
-
+        this._services.getAllTimes(d.id).subscribe((result) => {
+            this.timeList = result;
+        })
 
 
     }
+
 
     checkValidation() {
 
