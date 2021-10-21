@@ -15,7 +15,7 @@ namespace Test.Forms
     {
         Task<FormDto> GetForm(NullableIdDto input);
         Task CreateForm(FormDto input);
-        Task<List<TimeTableDto>> GetAllTimes();
+        Task<List<TimeTableDto>> GetAllTimes(int dateId);
 
          Task<List<DatesDto>> GetAllDates();
     }

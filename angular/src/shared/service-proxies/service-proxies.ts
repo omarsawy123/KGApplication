@@ -268,6 +268,127 @@ export class FormServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getAllDates(): Observable<DatesDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Form/GetAllDates";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllDates(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllDates(<any>response_);
+                } catch (e) {
+                    return <Observable<DatesDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DatesDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllDates(response: HttpResponseBase): Observable<DatesDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(DatesDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DatesDto[]>(<any>null);
+    }
+
+    /**
+     * @param dateId (optional) 
+     * @return Success
+     */
+    getAllTimes(dateId: number | undefined): Observable<TimeTableDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Form/GetAllTimes?";
+        if (dateId === null)
+            throw new Error("The parameter 'dateId' cannot be null.");
+        else if (dateId !== undefined)
+            url_ += "dateId=" + encodeURIComponent("" + dateId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllTimes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllTimes(<any>response_);
+                } catch (e) {
+                    return <Observable<TimeTableDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<TimeTableDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllTimes(response: HttpResponseBase): Observable<TimeTableDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(TimeTableDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TimeTableDto[]>(<any>null);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -2384,6 +2505,8 @@ export class FormDto implements IFormDto {
     studentRelativeName: string | undefined;
     studentRelativeGrade: string | undefined;
     joiningSchool: string | undefined;
+    dateId: number;
+    timeId: number;
     tenantId: number;
     id: number;
 
@@ -2415,6 +2538,8 @@ export class FormDto implements IFormDto {
             this.studentRelativeName = _data["studentRelativeName"];
             this.studentRelativeGrade = _data["studentRelativeGrade"];
             this.joiningSchool = _data["joiningSchool"];
+            this.dateId = _data["dateId"];
+            this.timeId = _data["timeId"];
             this.tenantId = _data["tenantId"];
             this.id = _data["id"];
         }
@@ -2446,6 +2571,8 @@ export class FormDto implements IFormDto {
         data["studentRelativeName"] = this.studentRelativeName;
         data["studentRelativeGrade"] = this.studentRelativeGrade;
         data["joiningSchool"] = this.joiningSchool;
+        data["dateId"] = this.dateId;
+        data["timeId"] = this.timeId;
         data["tenantId"] = this.tenantId;
         data["id"] = this.id;
         return data; 
@@ -2477,6 +2604,134 @@ export interface IFormDto {
     studentRelativeName: string | undefined;
     studentRelativeGrade: string | undefined;
     joiningSchool: string | undefined;
+    dateId: number;
+    timeId: number;
+    tenantId: number;
+    id: number;
+}
+
+export class DatesDto implements IDatesDto {
+    dateName: string | undefined;
+    dateValue: moment.Moment;
+    isStartDate: boolean;
+    isEndDate: boolean;
+    isEnabled: boolean;
+    tenantId: number;
+    id: number;
+
+    constructor(data?: IDatesDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.dateName = _data["dateName"];
+            this.dateValue = _data["dateValue"] ? moment(_data["dateValue"].toString()) : <any>undefined;
+            this.isStartDate = _data["isStartDate"];
+            this.isEndDate = _data["isEndDate"];
+            this.isEnabled = _data["isEnabled"];
+            this.tenantId = _data["tenantId"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): DatesDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DatesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["dateName"] = this.dateName;
+        data["dateValue"] = this.dateValue ? this.dateValue.toISOString() : <any>undefined;
+        data["isStartDate"] = this.isStartDate;
+        data["isEndDate"] = this.isEndDate;
+        data["isEnabled"] = this.isEnabled;
+        data["tenantId"] = this.tenantId;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): DatesDto {
+        const json = this.toJSON();
+        let result = new DatesDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDatesDto {
+    dateName: string | undefined;
+    dateValue: moment.Moment;
+    isStartDate: boolean;
+    isEndDate: boolean;
+    isEnabled: boolean;
+    tenantId: number;
+    id: number;
+}
+
+export class TimeTableDto implements ITimeTableDto {
+    timeName: string | undefined;
+    timeValue: moment.Moment;
+    isEnabled: boolean;
+    tenantId: number;
+    id: number;
+
+    constructor(data?: ITimeTableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.timeName = _data["timeName"];
+            this.timeValue = _data["timeValue"] ? moment(_data["timeValue"].toString()) : <any>undefined;
+            this.isEnabled = _data["isEnabled"];
+            this.tenantId = _data["tenantId"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): TimeTableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeTableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["timeName"] = this.timeName;
+        data["timeValue"] = this.timeValue ? this.timeValue.toISOString() : <any>undefined;
+        data["isEnabled"] = this.isEnabled;
+        data["tenantId"] = this.tenantId;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): TimeTableDto {
+        const json = this.toJSON();
+        let result = new TimeTableDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITimeTableDto {
+    timeName: string | undefined;
+    timeValue: moment.Moment;
+    isEnabled: boolean;
     tenantId: number;
     id: number;
 }

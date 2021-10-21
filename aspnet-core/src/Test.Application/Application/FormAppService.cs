@@ -54,8 +54,34 @@ namespace Test.Forms
 
                 var AppTimeDate = new ApplicationTimeDate();
 
+                if (_appRepository.GetAll().Where(a => a.DateFk.Id == input.DateId).Count() == 59)
+                {
+                    var d = await _dateRepository.GetAsync((int)input.DateId);
+                    d.IsEnabled = false;
+                    await _dateRepository.UpdateAsync(d);
+
+                }
+
+                AppTimeDate.DateFk = await _dateRepository.GetAsync((int)input.DateId);
+
+                //if (_appRepository.FirstOrDefault(a => a.TimeFk.Id == input.TimeId) == null)
+                //{
+                //    var t = await _timeRepository.GetAsync((int)input.TimeId);
+                //    t.IsEnabled = false;
+                //    await _timeRepository.UpdateAsync(t);
+
+                //    AppTimeDate.TimeFk = await _timeRepository.GetAsync((int)input.TimeId);
+
+                //}
+
+
+               
                 AppTimeDate.TimeFk = await _timeRepository.GetAsync((int)input.TimeId);
-                //AppTimeDate.DateFk = await _dateRepository.GetAsync((int)input.DateId);
+
+                var t = await _timeRepository.GetAsync((int)input.TimeId);
+                t.IsEnabled = false;
+                await _timeRepository.UpdateAsync(t);
+
                 AppTimeDate.FormFk = newForm;
                 AppTimeDate.TenantId = 1;
                 AppTimeDate.IsDeleted = false;
@@ -81,16 +107,37 @@ namespace Test.Forms
 
             var date = await _dateRepository.GetAll().ToListAsync();
 
+
+
             return ObjectMapper.Map<List<DatesDto>>(date);
 
         }
 
-        public async Task<List<TimeTableDto>> GetAllTimes()
+        public async Task<List<TimeTableDto>> GetAllTimes(int dateId)
         {
+            var subselect = (from ap in _appRepository.GetAll().Where(a=>a.DateFk.Id==dateId) select ap.TimeFk.Id).ToList();
 
-            var time = await _timeRepository.GetAll().ToListAsync();
+            var result = await (from tm in _timeRepository.GetAll() where !subselect.Contains(tm.Id) select tm).ToListAsync();
 
-            return ObjectMapper.Map<List<TimeTableDto>>(time);
+            //var query = await (from ap in _appRepository.GetAll().Where(d => d.DateFk.Id == dateId)
+            //                   join tm in _timeRepository.GetAll() on ap.TimeFk.Id equals tm.Id into times
+            //                   from tm in times.DefaultIfEmpty()
+            //                   where tm == null
+            //                   select new TimesTable
+            //                   {
+
+            //                       TimeName = tm.TimeName,
+            //                       TimeValue = tm.TimeValue,
+            //                       TenantId = 1,
+            //                       IsEnabled = tm.IsEnabled,
+            //                       Id = tm.Id,
+
+            //                   }
+
+            //           ).ToListAsync();
+
+
+            return ObjectMapper.Map<List<TimeTableDto>>(result);
 
         }
 

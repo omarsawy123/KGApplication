@@ -179,10 +179,10 @@
                                         </bs-datepicker-inline>
                                     </div>
                                     <div class="row" style="margin-bottom: 5px;">
-                                        <div class="col-md-3">
-                                            <select [ngModelOptions]="{standalone: true}" [(ngModel)]="timeList"
-                                                class="form-control">
-                                                <option *ngFor="let time of timeList">{{time}}</option>
+                                        <div class="col-md-3" *ngIf="!loading">
+                                            <select class="form-control" formControlName="formTime">
+                                                <option *ngFor="let time of timesTable" [value]="time.id">
+                                                    {{time.timeName}}</option>
                                             </select>
                                         </div>
                                         <!-- <timepicker [ngModelOptions]="{standalone: true}" [min]="minTime"
@@ -196,8 +196,8 @@
                                     <div class="col-md-3">
                                         <button class="btn btn-primary" type="button" *ngIf="!chooseDate"
                                             (click)="chooseDate=true">Next</button>
-                                        <button class="btn btn-primary" type="button" style="margin-right: 10px;" *ngIf="chooseDate"
-                                            (click)="chooseDate=false">Back</button>
+                                        <button class="btn btn-primary" type="button" style="margin-right: 10px;"
+                                            *ngIf="chooseDate" (click)="chooseDate=false">Back</button>
 
                                         <button *ngIf="chooseDate" class="btn btn-success"
                                             [disabled]="ApplicationForm.invalid" type="submit">Save</button>
