@@ -329,7 +329,7 @@ export class FormServiceProxy {
      * @param dateId (optional) 
      * @return Success
      */
-    getAllTimes(dateId: number | undefined): Observable<TimesTable[]> {
+    getAllTimes(dateId: number | undefined): Observable<TimeTableDto[]> {
         let url_ = this.baseUrl + "/api/services/app/Form/GetAllTimes?";
         if (dateId === null)
             throw new Error("The parameter 'dateId' cannot be null.");
@@ -352,14 +352,14 @@ export class FormServiceProxy {
                 try {
                     return this.processGetAllTimes(<any>response_);
                 } catch (e) {
-                    return <Observable<TimesTable[]>><any>_observableThrow(e);
+                    return <Observable<TimeTableDto[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<TimesTable[]>><any>_observableThrow(response_);
+                return <Observable<TimeTableDto[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAllTimes(response: HttpResponseBase): Observable<TimesTable[]> {
+    protected processGetAllTimes(response: HttpResponseBase): Observable<TimeTableDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -373,7 +373,7 @@ export class FormServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200.push(TimesTable.fromJS(item));
+                    result200.push(TimeTableDto.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -385,7 +385,7 @@ export class FormServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<TimesTable[]>(<any>null);
+        return _observableOf<TimeTableDto[]>(<any>null);
     }
 
     /**
@@ -2610,12 +2610,72 @@ export interface IFormDto {
     id: number;
 }
 
+export class TimeTableDto implements ITimeTableDto {
+    timeName: string | undefined;
+    timeValue: moment.Moment;
+    isEnabled: boolean;
+    tenantId: number;
+    id: number;
+
+    constructor(data?: ITimeTableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.timeName = _data["timeName"];
+            this.timeValue = _data["timeValue"] ? moment(_data["timeValue"].toString()) : <any>undefined;
+            this.isEnabled = _data["isEnabled"];
+            this.tenantId = _data["tenantId"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): TimeTableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeTableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["timeName"] = this.timeName;
+        data["timeValue"] = this.timeValue ? this.timeValue.toISOString() : <any>undefined;
+        data["isEnabled"] = this.isEnabled;
+        data["tenantId"] = this.tenantId;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): TimeTableDto {
+        const json = this.toJSON();
+        let result = new TimeTableDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITimeTableDto {
+    timeName: string | undefined;
+    timeValue: moment.Moment;
+    isEnabled: boolean;
+    tenantId: number;
+    id: number;
+}
+
 export class DatesDto implements IDatesDto {
     dateName: string | undefined;
     dateValue: moment.Moment;
     isStartDate: boolean;
     isEndDate: boolean;
     isEnabled: boolean;
+    timeTable: TimeTableDto[] | undefined;
     tenantId: number;
     id: number;
 
@@ -2635,6 +2695,11 @@ export class DatesDto implements IDatesDto {
             this.isStartDate = _data["isStartDate"];
             this.isEndDate = _data["isEndDate"];
             this.isEnabled = _data["isEnabled"];
+            if (Array.isArray(_data["timeTable"])) {
+                this.timeTable = [] as any;
+                for (let item of _data["timeTable"])
+                    this.timeTable.push(TimeTableDto.fromJS(item));
+            }
             this.tenantId = _data["tenantId"];
             this.id = _data["id"];
         }
@@ -2654,6 +2719,11 @@ export class DatesDto implements IDatesDto {
         data["isStartDate"] = this.isStartDate;
         data["isEndDate"] = this.isEndDate;
         data["isEnabled"] = this.isEnabled;
+        if (Array.isArray(this.timeTable)) {
+            data["timeTable"] = [];
+            for (let item of this.timeTable)
+                data["timeTable"].push(item.toJSON());
+        }
         data["tenantId"] = this.tenantId;
         data["id"] = this.id;
         return data; 
@@ -2673,94 +2743,8 @@ export interface IDatesDto {
     isStartDate: boolean;
     isEndDate: boolean;
     isEnabled: boolean;
+    timeTable: TimeTableDto[] | undefined;
     tenantId: number;
-    id: number;
-}
-
-export class TimesTable implements ITimesTable {
-    timeName: string;
-    timeValue: moment.Moment;
-    isEnabled: boolean;
-    tenantId: number;
-    isDeleted: boolean;
-    deleterUserId: number | undefined;
-    deletionTime: moment.Moment | undefined;
-    lastModificationTime: moment.Moment | undefined;
-    lastModifierUserId: number | undefined;
-    creationTime: moment.Moment;
-    creatorUserId: number | undefined;
-    id: number;
-
-    constructor(data?: ITimesTable) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.timeName = _data["timeName"];
-            this.timeValue = _data["timeValue"] ? moment(_data["timeValue"].toString()) : <any>undefined;
-            this.isEnabled = _data["isEnabled"];
-            this.tenantId = _data["tenantId"];
-            this.isDeleted = _data["isDeleted"];
-            this.deleterUserId = _data["deleterUserId"];
-            this.deletionTime = _data["deletionTime"] ? moment(_data["deletionTime"].toString()) : <any>undefined;
-            this.lastModificationTime = _data["lastModificationTime"] ? moment(_data["lastModificationTime"].toString()) : <any>undefined;
-            this.lastModifierUserId = _data["lastModifierUserId"];
-            this.creationTime = _data["creationTime"] ? moment(_data["creationTime"].toString()) : <any>undefined;
-            this.creatorUserId = _data["creatorUserId"];
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): TimesTable {
-        data = typeof data === 'object' ? data : {};
-        let result = new TimesTable();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["timeName"] = this.timeName;
-        data["timeValue"] = this.timeValue ? this.timeValue.toISOString() : <any>undefined;
-        data["isEnabled"] = this.isEnabled;
-        data["tenantId"] = this.tenantId;
-        data["isDeleted"] = this.isDeleted;
-        data["deleterUserId"] = this.deleterUserId;
-        data["deletionTime"] = this.deletionTime ? this.deletionTime.toISOString() : <any>undefined;
-        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toISOString() : <any>undefined;
-        data["lastModifierUserId"] = this.lastModifierUserId;
-        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
-        data["creatorUserId"] = this.creatorUserId;
-        data["id"] = this.id;
-        return data; 
-    }
-
-    clone(): TimesTable {
-        const json = this.toJSON();
-        let result = new TimesTable();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ITimesTable {
-    timeName: string;
-    timeValue: moment.Moment;
-    isEnabled: boolean;
-    tenantId: number;
-    isDeleted: boolean;
-    deleterUserId: number | undefined;
-    deletionTime: moment.Moment | undefined;
-    lastModificationTime: moment.Moment | undefined;
-    lastModifierUserId: number | undefined;
-    creationTime: moment.Moment;
-    creatorUserId: number | undefined;
     id: number;
 }
 

@@ -1,15 +1,13 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
-import { DatesDto, FormDto, FormServiceProxy } from '@shared/service-proxies/service-proxies';
+import { DatesDto, FormDto, FormServiceProxy, TimeTableDto } from '@shared/service-proxies/service-proxies';
 import { result } from 'lodash';
 import * as moment from 'moment';
-import { getDate } from 'ngx-bootstrap/chronos/utils/date-getters';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/bs-datepicker.config';
 import { TimepickerConfig } from 'ngx-bootstrap/timepicker';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
-import { finalize } from 'rxjs/operators';
 
 // export function getTimepickerConfig(): TimepickerConfig {
 
@@ -44,12 +42,10 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     ApplicationForm: FormGroup;
     datePickerConfig: Partial<BsDatepickerConfig>;
     timePickerConfig: Partial<TimepickerConfig>;
-    timeList;
 
-    @ViewChild('microwaveRef') microwaveElement: ElementRef;
 
     chooseDate: boolean = false;
-    time: Date = new Date();
+    time;
     minTime: Date = new Date();
     maxTime: Date = new Date();
     bsInlineValue;
@@ -58,6 +54,8 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     enabledDates = [];
     Dates: DatesDto[] = [];
     loading: boolean = true;
+    timetable: TimeTableDto[];
+    r: FormDto;
 
     // enabledDates = [
     //     new Date('2021-10-20'),
@@ -66,7 +64,7 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     // ];
 
 
-    constructor(inject: Injector, private fb: FormBuilder, private _services: FormServiceProxy) {
+    constructor(inject: Injector, private fb: FormBuilder, private _services: FormServiceProxy, private router: Router) {
         super(inject);
 
 
@@ -114,11 +112,6 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
             this.Dates.forEach((dt) => {
                 if (dt.isEnabled) this.enabledDates.push(dt.dateValue.toDate())
             })
-            // this._services.getAllTimes(this.Dates[0].id).subscribe((result) => {
-            //     this.timeList = result;
-            //     this.bsInlineValue = this.Dates[0].dateValue.toDate();
-
-            // })
         })
 
     }
@@ -154,13 +147,16 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
 
 
 
-    async dateChanged() {
+    dateChanged(val: Date) {
 
-        let d = this.Dates.find(d => d.dateValue.toDate().toLocaleDateString() == this.bsInlineValue.toLocaleDateString())
 
-        this._services.getAllTimes(d.id).subscribe((result) => {
-            this.timeList = result;
-        })
+        if (val) {
+
+            let d = this.Dates.find(d => d.dateValue.toDate().toLocaleDateString() == val.toLocaleDateString())
+
+            this.timetable = d.timeTable;
+
+        }
 
 
     }
@@ -271,12 +267,16 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
         this.model.studentRelativeName = this.ApplicationForm.controls.studentRelativeName.value;
         this.model.joiningSchool = this.ApplicationForm.controls.joiningSchool.value;
         this.model.studentRelativeGrade = "";
+        this.model.dateId = 1;
+        this.model.timeId = 5;
+
         this.model.tenantId = 1;
 
         console.log(this.model);
 
-        this._services.create(this.model).subscribe((result) => {
+        this._services.createForm(this.model).subscribe((result) => {
             abp.message.success("Application Created !");
+            this.router.navigate(['../']);
         })
 
     }

@@ -3,7 +3,9 @@ using Abp.AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Test.Application.Dto;
 using Test.Dates;
+using Test.TimesTables;
 
 namespace Test.Dto.Dates
 {
@@ -18,6 +20,8 @@ namespace Test.Dto.Dates
         public bool IsStartDate { get; set; }
         public bool IsEndDate { get; set; }
         public bool IsEnabled { get; set; }
+
+        public List<TimeTableDto> TimeTable { get; set; }
 
 
         public int TenantId { get; set; }

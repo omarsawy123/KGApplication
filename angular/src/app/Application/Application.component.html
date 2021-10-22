@@ -176,24 +176,24 @@
                                     <div class="pr-3 pb-3 pe-3 w-auto">
                                         <!-- <input class="form-control" formControlName="formDate" bsDatepicker
                                             (bsValueChange)="dateChanged($event)" [datesEnabled]="enabledDates"> -->
-                                        <bs-datepicker-inline (bsValue)="bsInlineValue" [datesEnabled]="enabledDates">
+                                        <bs-datepicker-inline (bsValue)="bsInlineValue"
+                                            (bsValueChange)="dateChanged($event)" [datesEnabled]="enabledDates">
                                         </bs-datepicker-inline>
-                                        <button (click)="dateChanged()" type="button">Check Time</button>
+                                        <!-- <button (click)="dateChanged()" class="btn btn-primary" type="button">Check
+                                            Time</button> -->
 
                                     </div>
                                     <div class="row" style="margin-bottom: 5px;">
-                                        <div class="col-md-3">
+                                        <!-- <div class="col-md-3">
                                             <select class="form-control" id="timeList" formControlName="formTime">
-                                                <option *ngFor="let tm of timeList">
-                                                    {{tm.timeName}}
-                                                </option>
+
                                             </select>
-                                        </div>
+                                        </div> -->
                                         <!-- <timepicker [ngModelOptions]="{standalone: true}" [min]="minTime"
                                             [max]="maxTime" [(ngModel)]="time">
                                         </timepicker>
-                                        <pre class="alert alert-info"
-                                            [class.alert-danger]="time>12">Time is: {{time}}</pre> -->
+                                    -->
+                                        {{timetable|json}}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -205,6 +205,7 @@
 
                                         <button *ngIf="chooseDate" class="btn btn-success"
                                             [disabled]="ApplicationForm.invalid" type="submit">Save</button>
+
                                     </div>
                                 </div>
                             </form>

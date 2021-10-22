@@ -106,56 +106,75 @@ namespace Test.Forms
         {
 
             var date = await _dateRepository.GetAll().ToListAsync();
+            var dates = ObjectMapper.Map<List<DatesDto>>(date);
 
-
-
-            return ObjectMapper.Map<List<DatesDto>>(date);
-
-        }
-
-        public async  Task<List<TimesTable>> GetAllTimes(int dateId)
-        {
-
-            var subselect = (from ap in _appRepository.GetAll().Where(a => a.DateFk.Id == dateId) select ap.TimeFk.Id).ToList();
-
-            if (subselect.Count > 0)
+            foreach (var da in dates)
             {
-
-                var result =  _timeRepository.GetAll();
-                foreach (var res in result)
+                if (da.IsEnabled)
                 {
-                    if (subselect.Contains(res.Id))
-                    {
-                        res.IsEnabled = false;
-                    }
+                    var subselect = (from ap in _appRepository.GetAll().Where(a => a.DateFk.Id == da.Id) select ap.TimeFk.Id).ToList();
+                    var result = await (from tm in _timeRepository.GetAll() where !subselect.Contains(tm.Id) select tm).ToListAsync();
+
+
+
+                    da.TimeTable = ObjectMapper.Map<List<TimeTableDto>>(result);
+
+
                 }
-
-                //var result = await (from tm in _timeRepository.GetAll() where !subselect.Contains(tm.Id) select tm).ToListAsync();
-                return await result.ToListAsync();
-
             }
-            return new List<TimesTable>();
-
-            //var query = await (from ap in _appRepository.GetAll().Where(d => d.DateFk.Id == dateId)
-            //                   join tm in _timeRepository.GetAll() on ap.TimeFk.Id equals tm.Id into times
-            //                   from tm in times.DefaultIfEmpty()
-            //                   where tm == null
-            //                   select new TimesTable
-            //                   {
-
-            //                       TimeName = tm.TimeName,
-            //                       TimeValue = tm.TimeValue,
-            //                       TenantId = 1,
-            //                       IsEnabled = tm.IsEnabled,
-            //                       Id = tm.Id,
-
-            //                   }
-
-            //           ).ToListAsync();
 
 
+
+            return dates;
 
         }
+
+        public async Task<List<TimeTableDto>> GetAllTimes(int dateId)
+        {
+            var result = await _timeRepository.GetAll().ToListAsync();
+            return ObjectMapper.Map<List<TimeTableDto>>(result);
+        }
+
+        //public async  Task<List<TimesTable>> GetAllTimes(int dateId)
+        //{
+
+        //    if (_dateRepository.Get(dateId) != null)
+        //    {
+        //        var subselect = (from ap in _appRepository.GetAll().Where(a => a.DateFk.Id == dateId) select ap.TimeFk.Id).ToList();
+        //        var result = await (from tm in _timeRepository.GetAll() where !subselect.Contains(tm.Id) select tm).ToListAsync();
+        //        return result;
+
+
+        //    }
+
+        //    else
+        //    {
+        //        throw new UserFriendlyException("Date Is not Valid !");
+        //    }
+
+
+
+
+        //    //var query = await (from ap in _appRepository.GetAll().Where(d => d.DateFk.Id == dateId)
+        //    //                   join tm in _timeRepository.GetAll() on ap.TimeFk.Id equals tm.Id into times
+        //    //                   from tm in times.DefaultIfEmpty()
+        //    //                   where tm == null
+        //    //                   select new TimesTable
+        //    //                   {
+
+        //    //                       TimeName = tm.TimeName,
+        //    //                       TimeValue = tm.TimeValue,
+        //    //                       TenantId = 1,
+        //    //                       IsEnabled = tm.IsEnabled,
+        //    //                       Id = tm.Id,
+
+        //    //                   }
+
+        //    //           ).ToListAsync();
+
+
+
+        //}
 
         public async Task<FormDto> GetForm(NullableIdDto input)
         {
