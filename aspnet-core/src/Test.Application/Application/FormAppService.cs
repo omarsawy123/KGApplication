@@ -17,6 +17,8 @@ using Test.ApplicationTimeDates;
 using Microsoft.EntityFrameworkCore;
 using Test.Dto.Dates;
 using Test.Application.Dto;
+using Abp.Runtime.Session;
+using Test.Dto.ViewForm;
 
 namespace Test.Forms
 {
@@ -29,17 +31,21 @@ namespace Test.Forms
         private readonly IRepository<DatesTable, int> _dateRepository;
         private readonly IRepository<TimesTable, int> _timeRepository;
         private readonly IRepository<ApplicationTimeDate, int> _appRepository;
+        private readonly IAbpSession _abpSession;
+
 
         public FormAppService(IRepository<Form, int> repository
             , IRepository<DatesTable, int> dateRepository
             , IRepository<TimesTable, int> timeRepository
             , IRepository<ApplicationTimeDate, int> appRepository
+            ,IAbpSession abpSession
             ) : base(repository)
         {
             this._formRepository = repository;
             this._dateRepository = dateRepository;
             this._timeRepository = timeRepository;
             this._appRepository = appRepository;
+            this._abpSession = abpSession;
         }
 
         public async Task CreateForm(FormDto input)
@@ -86,6 +92,7 @@ namespace Test.Forms
                 AppTimeDate.TenantId = 1;
                 AppTimeDate.IsDeleted = false;
                 AppTimeDate.CreationTime = DateTime.Now;
+                AppTimeDate.UserId = (int)_abpSession.UserId.Value;
 
                 await _appRepository.InsertAsync(AppTimeDate);
 
@@ -101,6 +108,12 @@ namespace Test.Forms
 
         }
 
+        //public async Task<DateTimeApplicationDto> GetDateTimeApplication()
+        //{
+
+        //    _
+
+        //}
 
         public async Task <List<DatesDto>> GetAllDates()
         {
@@ -135,48 +148,27 @@ namespace Test.Forms
             return ObjectMapper.Map<List<TimeTableDto>>(result);
         }
 
-        //public async  Task<List<TimesTable>> GetAllTimes(int dateId)
-        //{
 
-        //    if (_dateRepository.Get(dateId) != null)
-        //    {
-        //        var subselect = (from ap in _appRepository.GetAll().Where(a => a.DateFk.Id == dateId) select ap.TimeFk.Id).ToList();
-        //        var result = await (from tm in _timeRepository.GetAll() where !subselect.Contains(tm.Id) select tm).ToListAsync();
-        //        return result;
+        public async Task<int> CheckUserApplication()
+        {
 
+            var userId = _abpSession.UserId.Value;
+            var app2 = await _appRepository.GetAll().Where(a => a.Id == 1002).FirstOrDefaultAsync();
+            var app = await _appRepository.GetAll().Where(a => a.UserId == userId).Include(a => a.FormFk).FirstOrDefaultAsync();
 
-        //    }
+            if (app != null)
+            {
 
-        //    else
-        //    {
-        //        throw new UserFriendlyException("Date Is not Valid !");
-        //    }
+                return app.FormFk.Id;
 
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
-
-
-        //    //var query = await (from ap in _appRepository.GetAll().Where(d => d.DateFk.Id == dateId)
-        //    //                   join tm in _timeRepository.GetAll() on ap.TimeFk.Id equals tm.Id into times
-        //    //                   from tm in times.DefaultIfEmpty()
-        //    //                   where tm == null
-        //    //                   select new TimesTable
-        //    //                   {
-
-        //    //                       TimeName = tm.TimeName,
-        //    //                       TimeValue = tm.TimeValue,
-        //    //                       TenantId = 1,
-        //    //                       IsEnabled = tm.IsEnabled,
-        //    //                       Id = tm.Id,
-
-        //    //                   }
-
-        //    //           ).ToListAsync();
-
-
-
-        //}
-
-        public async Task<FormDto> GetForm(NullableIdDto input)
+        public async Task<ViewFormDto> GetForm(NullableIdDto input)
         {
             if (input.Id == null) throw new UserFriendlyException("Please Login Before Viewing Application");
 
@@ -184,11 +176,14 @@ namespace Test.Forms
             {
                 var form = await _formRepository.GetAsync((int)input.Id);
 
-                var app = await _appRepository.GetAll().Where(a => a.FormFk.Id == input.Id).FirstOrDefaultAsync();
+                var app = await _appRepository.GetAll().Where(a => a.FormFk.Id == input.Id)
+                    .Include(a => a.TimeFk).Include(a => a.DateFk).FirstOrDefaultAsync();
 
-                var result = ObjectMapper.Map<FormDto>(form);
-                result.DateId = app.DateFk.Id;
-                result.TimeId = app.TimeFk.Id;
+                ViewFormDto result = new ViewFormDto();
+                result.Form = ObjectMapper.Map<FormDto>(form);
+               
+                result.DateName = app.DateFk.DateName;
+                result.TimeName = app.TimeFk.TimeName;
 
                 return result;
 

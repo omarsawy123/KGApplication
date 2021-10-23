@@ -43,6 +43,7 @@ import { SidebarLogoComponent } from './layout/sidebar-logo.component';
 import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component';
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
 import { ApplicationComponent } from './Application/Application.component';
+import { ViewApplicationComponent } from './Application/ViewApplication.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { ApplicationComponent } from './Application/Application.component';
     SidebarMenuComponent,
 
     //Application
-    ApplicationComponent
+    ApplicationComponent,
+    ViewApplicationComponent,
 
   ],
   imports: [

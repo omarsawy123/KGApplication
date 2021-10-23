@@ -63,7 +63,7 @@
       <abp-validation-summary [control]="passwordModel" [controlEl]="passwordEl"></abp-validation-summary>
     </div>
 
-    
+
     <div class="card" style="text-align: right;margin-top: 5px;margin-bottom: 35px;">
       <div class="card-header" style="background-color: #d5e8eb8a;">
         <h5>{{l('Policy')}}</h5>
@@ -116,9 +116,10 @@
             <br><br>
           </font>
         </h5>
-        <label for="policyCheck">{{l('policyCheck')}}</label>
-        <input class="form-check-inline" type="checkbox" [ngModelOptions]="{standalone: true}" [(ngModel)]="policyCheck"
-          id="policyCheck">
+        <!-- {{l('policyCheck')}} -->
+        <label for="policyCheck">. أوافق على شروط سياسة الموقع</label>
+        <input class="form-check-inline" style="margin:10px;" type="checkbox" [ngModelOptions]="{standalone: true}"
+          [(ngModel)]="policyCheck" id="policyCheck">
       </div>
 
     </div>

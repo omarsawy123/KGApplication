@@ -6,6 +6,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { DatesDto, FormDto, FormServiceProxy, TimeTableDto } from '@shared/service-proxies/service-proxies';
 import { result } from 'lodash';
 import * as moment from 'moment';
+import { DatepickerDateCustomClasses } from 'ngx-bootstrap/datepicker';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/bs-datepicker.config';
 import { TimepickerConfig } from 'ngx-bootstrap/timepicker';
 
@@ -49,13 +50,16 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     minTime: Date = new Date();
     maxTime: Date = new Date();
     bsInlineValue;
-
+    dateCustomClasses: DatepickerDateCustomClasses[] = [];
 
     enabledDates = [];
     Dates: DatesDto[] = [];
     loading: boolean = true;
     timetable: TimeTableDto[];
     r: FormDto;
+    dateId: number;
+    ViewApp: boolean = false;
+    formView: FormDto;
 
     // enabledDates = [
     //     new Date('2021-10-20'),
@@ -67,23 +71,26 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     constructor(inject: Injector, private fb: FormBuilder, private _services: FormServiceProxy, private router: Router) {
         super(inject);
 
+        this._services.checkUserApplication().subscribe((result) => {
+            if (result != 0) {
+                this.ViewApp = true;
+                this.router.navigate(['/app/viewapplication'], { state: { formId: result } })
+            }
 
+        })
 
         this.datePickerConfig = Object.assign({}, {
             containerClass: 'theme-dark-blue',
             dateInputFormat: 'DD/MM/YYYY',
             isAnimated: true,
         });
-        // this.timePickerConfig = Object.assign({
-        //     showMeridian: false,
-        //     min: this.minTime,
-        //     max: this.maxTime,
-        // })
+
     }
 
 
 
     ngOnInit() {
+
 
         this.ApplicationForm = this.fb.group({
             studentName: ['', Validators.required],
@@ -111,7 +118,25 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
             this.Dates = result;
             this.Dates.forEach((dt) => {
                 if (dt.isEnabled) this.enabledDates.push(dt.dateValue.toDate())
+
             })
+            // this.bsInlineValue = this.Dates[0].dateValue.toDate();
+            // this.dateChanged(this.bsInlineValue);
+            this.enabledDates.forEach((dt) => {
+                this.dateCustomClasses.push({
+                    date: dt,
+                    classes: ['bg-primary']
+                })
+            })
+        })
+
+    }
+
+    setViewValues(id: number) {
+
+        this._services.getForm(id).subscribe((result) => {
+            this.formView = result;
+
         })
 
     }
@@ -154,7 +179,10 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
 
             let d = this.Dates.find(d => d.dateValue.toDate().toLocaleDateString() == val.toLocaleDateString())
 
-            this.timetable = d.timeTable;
+            if (d) {
+                this.timetable = d.timeTable;
+                this.dateId = d.id;
+            }
 
         }
 
@@ -267,8 +295,8 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
         this.model.studentRelativeName = this.ApplicationForm.controls.studentRelativeName.value;
         this.model.joiningSchool = this.ApplicationForm.controls.joiningSchool.value;
         this.model.studentRelativeGrade = "";
-        this.model.dateId = 1;
-        this.model.timeId = 5;
+        this.model.dateId = this.dateId;
+        this.model.timeId = this.ApplicationForm.controls.formTime.value;
 
         this.model.tenantId = 1;
 

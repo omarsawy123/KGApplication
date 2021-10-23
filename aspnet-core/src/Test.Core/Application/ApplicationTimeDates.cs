@@ -7,6 +7,7 @@ using System.Text;
 using Test.Forms;
 using Test.Dates;
 using Test.TimesTables;
+using Abp.Runtime.Session;
 
 namespace Test.ApplicationTimeDates
 {
@@ -16,13 +17,15 @@ namespace Test.ApplicationTimeDates
     {
 
         [ForeignKey("FormId")]
-        public Form FormFk { get; set; }
+        public virtual Form FormFk { get; set; }
 
         [ForeignKey("DateId")]
-        public DatesTable DateFk { get; set; }
+        public virtual DatesTable DateFk { get; set; }
 
         [ForeignKey("TimeId")]
-        public TimesTable TimeFk { get; set; }
+        public virtual TimesTable TimeFk { get; set; }
+
+        public int UserId { get; set; }
 
         public int TenantId { get; set; }
     }
