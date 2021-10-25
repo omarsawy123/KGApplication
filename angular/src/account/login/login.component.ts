@@ -3,6 +3,7 @@ import { AbpSessionService } from 'abp-ng2-module';
 import { AppComponentBase } from '@shared/app-component-base';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppAuthService } from '@shared/auth/app-auth.service';
+import { AccountServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
   templateUrl: './login.component.html',
@@ -14,7 +15,8 @@ export class LoginComponent extends AppComponentBase {
   constructor(
     injector: Injector,
     public authService: AppAuthService,
-    private _sessionService: AbpSessionService
+    private _sessionService: AbpSessionService,
+    private _service: AccountServiceProxy
   ) {
     super(injector);
   }
@@ -32,6 +34,11 @@ export class LoginComponent extends AppComponentBase {
   }
 
   login(): void {
+
+    // this.authService.authenticateModel.userNameOrEmailAddress
+
+    // this._service.checkUserEmailConfirmation()
+    
     this.submitting = true;
     this.authService.authenticate(() => (this.submitting = false));
   }
