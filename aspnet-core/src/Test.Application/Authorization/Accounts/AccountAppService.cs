@@ -50,14 +50,12 @@ namespace Test.Authorization.Accounts
         public void SendEmailConfirmation(string token,int userId,string mail)
         {
 
-            var fromAddress = new MailAddress("omarsawy51@gmail.com", "From Name");
-            var toAddress = new MailAddress(mail, "To Name");
-            const string fromPassword = "console.write12";
-            const string subject = "DSBA Email Confirmation ";
+            var fromAddress = new MailAddress("omarsawy45@gmail.com", "From DSBA");
+            var toAddress = new MailAddress(mail, "To Parent");
+            const string fromPassword = "omarsawy1998";
 
-            //string foo = ... coming from user input
-            //string baz = ... coming from user input
-            //var uri = Microsoft.AspNetCore.Http.HttpContext.Current.Request.Url.AbsoluteUri
+            var user = _repository.FirstOrDefault(u => u.Id == userId);
+
             var uriBuilder = new UriBuilder("http://localhost:4200/account/loginExternal");
             var parameters = HttpUtility.ParseQueryString(string.Empty);
             parameters["tokenId"] = token;
@@ -65,10 +63,52 @@ namespace Test.Authorization.Accounts
             uriBuilder.Query = parameters.ToString();
 
             Uri finalUrl = uriBuilder.Uri;
-            //var request = WebRequest.Create(finalUrl);
 
 
             string body = finalUrl.AbsoluteUri;
+
+            string EmailSubject = "Deutsche Schule der Borromäerinnen Alexandria – Activate your account?";
+
+            #region Email Body
+
+            string EmailBody = "";
+            EmailBody = "<table align='center' border='0' cellpadding='0' cellspacing='0' bgcolor='#fafafa' style='background-color:#fafafa;border-top:1px solid #e1e1e1;border-left:1px solid #e1e1e1;border-right:1px solid #e1e1e1;border-bottom:1px solid #e1e1e1;' width='90%'>";
+
+            EmailBody = EmailBody + "<tbody><tr><td width='24'>&nbsp;</td><td style='padding-top:16px;'>";
+           
+            EmailBody = EmailBody + "<td align='right' style='padding-top:10px;'>&nbsp;</td><td width='24'>&nbsp;</td></tr><tr><td width='24'>&nbsp;</td>";
+            EmailBody = EmailBody + "<td colspan='2' style='color:#333333;font-family:Arial, Helvetica, sans-serif;font-size:24px;line-height:26px;padding-top:18px;'></td>";
+            EmailBody = EmailBody + "<td width='24'>&nbsp;</td></tr><tr><td width='24'>&nbsp;</td><td colspan='2' style='color:#00000;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:20px;padding-top:18px;'>";
+            EmailBody = EmailBody + "Dear &nbsp;" + user.Name + ", </td>";
+            EmailBody = EmailBody + "</tr><tr><td width='24'>&nbsp;</td><td colspan='2' style='color:#00000;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:20px;padding-top:18px;'>  Thank you for registering on the Deutsche Schule der Borromäerinnen Alexandria website  </td></tr>";
+            EmailBody = EmailBody + "<td width='24'>&nbsp;</td></tr><tr><td width='24'>&nbsp;</td><td colspan='2' style='color:#00000;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:20px;padding-top:18px;'>";
+
+            EmailBody = EmailBody + "Your username is: &nbsp; " + user.EmailAddress + "</td>";
+
+            EmailBody = EmailBody + "<tr><td width='24'>&nbsp;</td><td colspan='2' style='color:#00000;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:20px;padding-top:18px;'> You can now login to the website using your username and password in order to start the registration process.</td></tr>";
+
+
+            EmailBody = EmailBody + "<tr><td width='24'>&nbsp;</td><td colspan='2' style='color:#00000;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:20px;padding-top:18px;'>To activate your account please click here:</td></tr>";
+
+
+
+            EmailBody = EmailBody + "<td width='24'>&nbsp;</td></tr><tr><td width='24'>&nbsp;</td><td colspan='2' style='color:#858585;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:20px;padding-top:5px;'>";
+            var VarificationUrl = finalUrl;
+            EmailBody = EmailBody + "<a href='" + VarificationUrl + "' style='color:#156a9b;text-decoration:none;font-weight:bold;' target='_blank'>Click here to activate your account</a></td>";
+            //-----------------------------last row have Varification Url-------------//		
+
+            EmailBody = EmailBody + "<td width='24'>&nbsp;</td></tr><tr><td width='24'>&nbsp;</td><td colspan='2' style='color:#858585;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:20px;padding-top:18px;'>";
+            EmailBody = EmailBody + "If the link above is not working, please copy the following address into your web browser:</td>";
+
+            EmailBody = EmailBody + "<tr><td width='24'>&nbsp;</td><td colspan='2' style='color:#00000;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:20px;padding-top:5px;'><a href='" + VarificationUrl + "' style='color:#156a9b;text-decoration:none;font-weight:bold;' target='_blank'>" + VarificationUrl + "</a></td></tr>";
+
+            //-----------------------------last row have app url---------------//	
+            EmailBody = EmailBody + "<td width='24'>&nbsp;</td></tr><tr><td style='padding-top:18px;padding-bottom:32px;border-bottom:1px solid #e1e1e1;' width='24'>&nbsp;</td>";
+            EmailBody = EmailBody + "<td colspan='2' style='color:#858585;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:20px;padding-top:18px;padding-bottom:32px;border-bottom:1px solid #e1e1e1;'>We're glad you're here,<br>";
+            EmailBody = EmailBody + "Deutsche Schule der Borromäerinnen Alexandria</td><td style='padding-top:18px;padding-bottom:32px;border-bottom:1px solid #e1e1e1;' width='24'>&nbsp;</td></tr></tbody></table>";
+
+            #endregion
+
 
 
             var smtp = new SmtpClient
@@ -82,8 +122,9 @@ namespace Test.Authorization.Accounts
             };
             using (var message = new MailMessage(fromAddress, toAddress)
             {
-                Subject = subject,
-                Body = body
+                Subject = EmailSubject,
+                Body = EmailBody,
+                IsBodyHtml = true
             })
             {
                 smtp.Send(message);

@@ -60,6 +60,7 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     dateId: number;
     ViewApp: boolean = false;
     formView: FormDto;
+    dateName: string;
 
     // enabledDates = [
     //     new Date('2021-10-20'),
@@ -182,6 +183,7 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
             if (d) {
                 this.timetable = d.timeTable;
                 this.dateId = d.id;
+                this.dateName = d.dateName;
             }
 
         }
