@@ -18,8 +18,8 @@ import { ViewApplicationComponent } from './Application/ViewApplication.componen
                 path: '',
                 component: AppComponent,
                 children: [
-                    { path: 'home', component: HomeComponent,  canActivate: [AppRouteGuard] },
                     { path: 'application', component: ApplicationComponent, data: { permission: 'Pages.Application' }, canActivate: [AppRouteGuard] },
+                    { path: 'home', component: HomeComponent, data: { permission: 'Pages.Users' }, canActivate: [AppRouteGuard] },
                     { path: 'viewapplication', component: ViewApplicationComponent, data: { permission: 'Pages.Application' }, canActivate: [AppRouteGuard] },
                     { path: 'users', component: UsersComponent, data: { permission: 'Pages.Users' }, canActivate: [AppRouteGuard] },
                     { path: 'roles', component: RolesComponent, data: { permission: 'Pages.Roles' }, canActivate: [AppRouteGuard] },

@@ -14,14 +14,23 @@ export class ViewApplicationComponent implements OnInit {
     form: FormDto;
 
     constructor(private router: Router, private _services: FormServiceProxy) {
-        const nav = this.router.getCurrentNavigation();
-        this.formId = nav.extras.state ? nav.extras.state.formId : 0;
-        if (this.formId != 0) {
-            this._services.getForm(this.formId).subscribe((result) => {
-                // this.form = result;
-            });
-            
-        }
+        this._services.checkUserApplication().subscribe((result) => {
+            if (result != 0) {
+                console.log(result);
+                // this.ViewApp = true;
+                // this.router.navigate(['/app/viewapplication'], { state: { formId: result } })
+            }
+
+        })
+
+        // const nav = this.router.getCurrentNavigation();
+        // this.formId = nav.extras.state ? nav.extras.state.formId : 0;
+        // if (this.formId != 0) {
+        //     this._services.getForm(this.formId).subscribe((result) => {
+        //         // this.form = result;
+        //     });
+
+        // }
     }
 
     ngOnInit() {

@@ -61,7 +61,7 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     ViewApp: boolean = false;
     formView: FormDto;
     dateName: string;
-
+    timeName: string;
     // enabledDates = [
     //     new Date('2021-10-20'),
     //     new Date('2021-10-22'),
@@ -72,13 +72,13 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     constructor(inject: Injector, private fb: FormBuilder, private _services: FormServiceProxy, private router: Router) {
         super(inject);
 
-        this._services.checkUserApplication().subscribe((result) => {
-            if (result != 0) {
-                this.ViewApp = true;
-                this.router.navigate(['/app/viewapplication'], { state: { formId: result } })
-            }
+        // this._services.checkUserApplication().subscribe((result) => {
+        //     if (result != 0) {
+        //         this.ViewApp = true;
+        //         this.router.navigate(['/app/viewapplication'], { state: { formId: result } })
+        //     }
 
-        })
+        // })
 
         this.datePickerConfig = Object.assign({}, {
             containerClass: 'theme-dark-blue',

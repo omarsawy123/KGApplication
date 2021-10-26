@@ -187,7 +187,9 @@
                                         </div>
                                         <div class="row" style="margin-bottom: 15px;">
                                             <div class="col-md-3">
-                                                <select class="form-control" id="timeList" formControlName="formTime">
+                                                <select class="form-control"
+                                                    (change)="timeName=$event.target.textContent" id="timeList"
+                                                    formControlName="formTime">
                                                     <option value="" disabled selected>Select Time</option>
                                                     <option *ngFor="let tm of timetable" [value]="tm.id">
                                                         {{tm.timeName}}
@@ -199,14 +201,14 @@
                                         </timepicker>
                                     -->
                                         </div>
-                                        <pre class="alert alert-info">
-                                            Date is {{dateName}},Time is: {{ApplicationForm.get('formTime').value}}
-                                        </pre>
-                                        <!-- <div class="row">
+                                       
+                                        <div class="row">
                                             <div class="col-md-3">
-                                                
+                                                <div class="alert alert-primary" role="alert">
+                                                    Selected Date is : {{dateName}}
+                                                </div>
                                             </div>
-                                        </div> -->
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3">
