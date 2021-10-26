@@ -8,6 +8,8 @@ using System.Net;
 using System.Net.Mail;
 using System;
 using System.Web;
+using Abp.Domain.Repositories;
+using System.Linq;
 
 namespace Test.Authorization.Accounts
 {
@@ -18,12 +20,15 @@ namespace Test.Authorization.Accounts
 
         private readonly UserRegistrationManager _userRegistrationManager;
         private readonly UserManager _userManager;
+        private readonly IRepository<User, long> _repository;
 
         public AccountAppService(
-            UserRegistrationManager userRegistrationManager, UserManager userManager)
+            UserRegistrationManager userRegistrationManager, UserManager userManager
+            , IRepository<User, long> repository)
         {
             _userRegistrationManager = userRegistrationManager;
             _userManager = userManager;
+            _repository = repository;
         }
 
         public async Task<IsTenantAvailableOutput> IsTenantAvailable(IsTenantAvailableInput input)
@@ -42,11 +47,11 @@ namespace Test.Authorization.Accounts
             return new IsTenantAvailableOutput(TenantAvailabilityState.Available, tenant.Id);
         }
 
-        public void SendEmailConfirmation(string token,int userId)
+        public void SendEmailConfirmation(string token,int userId,string mail)
         {
 
             var fromAddress = new MailAddress("omarsawy51@gmail.com", "From Name");
-            var toAddress = new MailAddress("omarsawy51@gmail.com", "To Name");
+            var toAddress = new MailAddress(mail, "To Name");
             const string fromPassword = "console.write12";
             const string subject = "DSBA Email Confirmation ";
 
@@ -87,11 +92,14 @@ namespace Test.Authorization.Accounts
 
         }
 
-        public bool CheckUserEmailConfirmation(string userMail)
+        public bool CheckUserEmailConfirmation(string userMailOrName)
         {
-            
 
-            //if (user.IsEmailConfirmed) return true;
+            var user = _repository.FirstOrDefault(u => u.EmailAddress == userMailOrName
+            || u.UserName == userMailOrName);
+
+
+            if (user.IsEmailConfirmed) return true;
 
             return false;
 
@@ -136,7 +144,7 @@ namespace Test.Authorization.Accounts
             user.EmailConfirmationCode = await UserManager.GenerateEmailConfirmationTokenAsync(user);
 
 
-            SendEmailConfirmation(user.EmailConfirmationCode, (int)user.Id);
+            SendEmailConfirmation(user.EmailConfirmationCode, (int)user.Id,input.EmailAddress);
 
             var isEmailConfirmationRequiredForLogin = await SettingManager.GetSettingValueAsync<bool>(AbpZeroSettingNames.UserManagement.IsEmailConfirmationRequiredForLogin);
 

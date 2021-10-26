@@ -135,7 +135,7 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     setViewValues(id: number) {
 
         this._services.getForm(id).subscribe((result) => {
-            this.formView = result;
+            this.formView = result.form;
 
         })
 

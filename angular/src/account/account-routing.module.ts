@@ -14,10 +14,14 @@ import { LoginExternalComponent } from './login/loginExternal.component';
                 children: [
                     { path: 'login', component: LoginComponent },
                     { path: 'register', component: RegisterComponent },
-                    { path: 'loginExternal/tokenId:/:userId/', component: LoginExternalComponent },
 
                 ]
+            },
+            {
+                path: 'loginExternal',
+                component: LoginExternalComponent,
             }
+
         ])
     ],
     exports: [

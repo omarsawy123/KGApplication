@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppAuthService } from '@shared/auth/app-auth.service';
 import { AccountServiceProxy, EmailConfirmationResult } from '@shared/service-proxies/service-proxies';
 
@@ -14,26 +14,32 @@ export class LoginExternalComponent implements OnInit {
     userResult: EmailConfirmationResult;
 
     constructor(private _services: AccountServiceProxy, private _route: ActivatedRoute
-        , public authService: AppAuthService,) {
+        , public authService: AppAuthService, private router: Router) {
 
-        _route.paramMap.subscribe((map) => {
-            this.token = map.get('tokenId')
-            this.userId = +map.get('userId')
 
-            this._services.confirmEmail(this.token, this.userId).subscribe((result) => {
-                this.userResult = result;
-                if (this.userResult.canLogin) {
-                    authService.authenticateModel.userNameOrEmailAddress = this.userResult.userInfo.emailAddress
-                    authService.authenticateModel.password = this.userResult.userInfo.password;
+        _route.queryParams.subscribe((map) => {
+            this.token = map['tokenId']
+            this.userId = +map['userId']
 
-                    setTimeout(() => {
-                        this.login();
-                    }, 5000);
-                }
-            })
+            if (this.token && this.userId) {
 
+                this._services.confirmEmail(this.token, this.userId).subscribe((result) => {
+                    this.userResult = result;
+                    if (this.userResult.canLogin) {
+
+                        setTimeout(() => {
+                            this.router.navigate(['/account/login'])
+                        }, 5000);
+                        // authService.authenticateModel.userNameOrEmailAddress = this.userResult.userInfo.emailAddress
+                        // authService.authenticateModel.password = this.userResult.userInfo.password;
+
+                        // setTimeout(() => {
+                        //     this.login();
+                        // }, 5000);
+                    }
+                })
+            }
         })
-
     }
 
     login(): void {

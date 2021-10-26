@@ -18,7 +18,7 @@ export class ViewApplicationComponent implements OnInit {
         this.formId = nav.extras.state ? nav.extras.state.formId : 0;
         if (this.formId != 0) {
             this._services.getForm(this.formId).subscribe((result) => {
-                this.form = result;
+                // this.form = result;
             });
             
         }

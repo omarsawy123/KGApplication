@@ -5,6 +5,7 @@ import {
   Injector,
   Renderer2
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AppComponentBase } from '@shared/app-component-base';
 
 @Component({
@@ -12,8 +13,11 @@ import { AppComponentBase } from '@shared/app-component-base';
   encapsulation: ViewEncapsulation.None
 })
 export class AccountComponent extends AppComponentBase implements OnInit {
-  constructor(injector: Injector, private renderer: Renderer2) {
+  paramValue: any;
+  constructor(injector: Injector, private renderer: Renderer2, private _route: ActivatedRoute) {
     super(injector);
+
+    
   }
 
   showTenantChange(): boolean {

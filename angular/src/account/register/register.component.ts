@@ -53,7 +53,7 @@ export class RegisterComponent extends AppComponentBase {
         if (!result.canLogin) {
           this.notify.success(this.l('SuccessfullyRegistered'));
           this.notify.success(this.l('Please Confirm Email to Login'));
-          this._router.navigate(['/login']);
+          this._router.navigate(['/account/login']);
           return;
         }
 

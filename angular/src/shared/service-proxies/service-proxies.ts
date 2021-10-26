@@ -86,9 +86,10 @@ export class AccountServiceProxy {
     /**
      * @param token (optional) 
      * @param userId (optional) 
+     * @param mail (optional) 
      * @return Success
      */
-    sendEmailConfirmation(token: string | null | undefined, userId: number | undefined): Observable<void> {
+    sendEmailConfirmation(token: string | null | undefined, userId: number | undefined, mail: string | null | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Account/SendEmailConfirmation?";
         if (token !== undefined && token !== null)
             url_ += "token=" + encodeURIComponent("" + token) + "&";
@@ -96,6 +97,8 @@ export class AccountServiceProxy {
             throw new Error("The parameter 'userId' cannot be null.");
         else if (userId !== undefined)
             url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        if (mail !== undefined && mail !== null)
+            url_ += "mail=" + encodeURIComponent("" + mail) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -139,15 +142,13 @@ export class AccountServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
+     * @param userMailOrName (optional) 
      * @return Success
      */
-    checkUserEmailConfirmation(userId: number | undefined): Observable<boolean> {
+    checkUserEmailConfirmation(userMailOrName: string | null | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/api/services/app/Account/CheckUserEmailConfirmation?";
-        if (userId === null)
-            throw new Error("The parameter 'userId' cannot be null.");
-        else if (userId !== undefined)
-            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        if (userMailOrName !== undefined && userMailOrName !== null)
+            url_ += "userMailOrName=" + encodeURIComponent("" + userMailOrName) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
