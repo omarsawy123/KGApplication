@@ -50,7 +50,7 @@ export class LoginComponent extends AppComponentBase {
         this.authService.authenticate(() => (this.submitting = false));
       }
       else {
-        abp.notify.error("Please Confirm Mail First");
+        abp.notify.error("Please Make sure to Register and Confirm Email First");
       }
     })
 
