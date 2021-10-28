@@ -16,7 +16,13 @@
                             <h3 class="card-title">Application View </h3>
                         </div>
                         <div class="card-body  container">
-                            <div #pdfArabicData>
+                            <div class="row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4" style="text-align: center;font-size: 25px;">برجاء تسجيل الطلب أولا
+                                </div>
+                                <div class="col-md-4"></div>
+                            </div>
+                            <div #pdfArabicData *ngIf="!noApplication">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <img style="width: 45%;" src="assets/img/logo.png">
@@ -51,7 +57,7 @@
                                     <div class="col-md-3">
                                     </div>
                                 </div>
-                                <div >
+                                <div>
                                     <div class="row">
                                         <div class="col-md-9 DataInfo">
                                             {{form.studentNameAr}}
@@ -170,7 +176,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" *ngIf="!noApplication">
                                 <div class="col-md-3">
                                     <button class="btn btn-primary" (click)="printPdf()">Print</button>
                                 </div>

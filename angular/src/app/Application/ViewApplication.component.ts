@@ -30,6 +30,7 @@ export class ViewApplicationComponent implements OnInit {
     // @ViewChild('print') print:
     @ViewChild('pdfArabicData') pdfArabicData: ElementRef;
     @ViewChild('pdfHeader') pdfHeader: ElementRef;
+    noApplication: boolean;
 
 
 
@@ -47,6 +48,9 @@ export class ViewApplicationComponent implements OnInit {
                 })
                 // this.ViewApp = true;
                 // this.router.navigate(['/app/viewapplication'], { state: { formId: result } })
+            }
+            else {
+                this.noApplication = true;
             }
 
         })
