@@ -9,6 +9,27 @@ import * as moment from 'moment';
 import { DatepickerDateCustomClasses } from 'ngx-bootstrap/datepicker';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/bs-datepicker.config';
 import { TimepickerConfig } from 'ngx-bootstrap/timepicker';
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+pdfMake.fonts = {
+    arabicFont: {
+        normal: 'https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v27.2.2/dist/Vazir-Regular.ttf',
+        bold: 'https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v27.2.2/dist/Vazir-Regular.ttf',
+        // italics: '../../assests/fonts/Almarai-Regular.ttf',
+        // bolditalics: '../../assests/fonts/Almarai-Regular.ttf'
+    },
+    Roboto: {
+        normal: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf',
+        bold: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf',
+        italics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf',
+        bolditalics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf'
+    },
+}
+
+import { fromEvent } from 'rxjs';
+import { pathToFileURL } from 'url';
 
 // export function getTimepickerConfig(): TimepickerConfig {
 
@@ -38,7 +59,6 @@ import { TimepickerConfig } from 'ngx-bootstrap/timepicker';
 
 export class ApplicationComponent extends AppComponentBase implements OnInit {
 
-
     model: FormDto = new FormDto();
     ApplicationForm: FormGroup;
     datePickerConfig: Partial<BsDatepickerConfig>;
@@ -55,13 +75,17 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     enabledDates = [];
     Dates: DatesDto[] = [];
     loading: boolean = true;
-    timetable: TimeTableDto[];
+    timetable: TimeTableDto[] = [];
     r: FormDto;
     dateId: number;
     ViewApp: boolean = false;
     formView: FormDto;
     dateName: string;
     timeName: string;
+    formId: number;
+    invalidDate: boolean = false;
+    birthDateValid: boolean = true;
+    birthDateMinMaxInfo: string;
     // enabledDates = [
     //     new Date('2021-10-20'),
     //     new Date('2021-10-22'),
@@ -72,13 +96,17 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     constructor(inject: Injector, private fb: FormBuilder, private _services: FormServiceProxy, private router: Router) {
         super(inject);
 
-        // this._services.checkUserApplication().subscribe((result) => {
-        //     if (result != 0) {
-        //         this.ViewApp = true;
-        //         this.router.navigate(['/app/viewapplication'], { state: { formId: result } })
-        //     }
+        let d = new Date();
 
-        // })
+        this._services.checkApplicationStartEndDate(moment(d)).subscribe((result) => {
+            if (!result) {
+                this.invalidDate = true;
+            }
+        })
+
+        this._services.getStudentBirthDateMinMax().subscribe((result) => {
+            this.birthDateMinMaxInfo = result;
+        })
 
         this.datePickerConfig = Object.assign({}, {
             containerClass: 'theme-dark-blue',
@@ -131,20 +159,69 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
             })
         })
 
-    }
+        this._services.checkUserApplication().subscribe((result) => {
+            if (result != 0) {
 
-    setViewValues(id: number) {
+                this.ViewApp = true;
 
-        this._services.getForm(id).subscribe((result) => {
-            this.formView = result.form;
+                this._services.getForm(result).subscribe((frm) => {
+
+                    this.ViewApp = true;
+
+                    this.formView = frm.form
+                    this.dateName = frm.dateName
+                    this.timeName = frm.timeName
+
+                    this.setViewValues(this.formView);
+                })
+            }
 
         })
+
+
+
+    }
+
+    setViewValues(formView: FormDto) {
+
+        this.ApplicationForm.get('studentName').setValue(formView.studentName);
+        this.ApplicationForm.get('studentNameAr').setValue(formView.studentNameAr);
+        this.ApplicationForm.get('studentBirthDate').setValue(formView.studentBirthDate.toDate());
+        this.ApplicationForm.get('studentReligion').setValue(formView.studentReligion);
+        this.ApplicationForm.get('fatherJob').setValue(formView.fatherJob);
+        this.ApplicationForm.get('motherJob').setValue(formView.motherJob);
+        this.ApplicationForm.get('fatherMobile').setValue(formView.fatherMobile);
+        this.ApplicationForm.get('motherMobile').setValue(formView.motherMobile);
+        this.ApplicationForm.get('telephone').setValue(formView.telephone);
+        this.ApplicationForm.get('email').setValue(formView.email);
+        this.ApplicationForm.get('hasRelative').setValue(formView.hasRelatives);
+        this.ApplicationForm.get('motherSchoolGraduate').setValue(formView.motherSchoolGraduate);
+        this.ApplicationForm.get('motherGradYear').setValue(formView.motherGraduationYear);
+        this.ApplicationForm.get('studentNationalId').setValue(formView.studentNationalId);
+        this.ApplicationForm.get('studentRelativeName').setValue(formView.studentRelativeName);
+        this.ApplicationForm.get('joiningSchool').setValue(formView.joiningSchool);
+
+        this.formId = formView.id;
+
+        let d = this.Dates.find(d => d.id == formView.dateId);
+        this.dateId = formView.dateId;
+        this.timetable = d.timeTable;
+
+        this.ApplicationForm.get('formDate').setValue(formView.dateId);
+        this.ApplicationForm.get('formTime').setValue(formView.timeId);
+
+
+        this.checkValidation();
+
+
 
     }
 
     get f() {
         return this.ApplicationForm.controls;
     }
+
+    
 
     checkPattern(event, alphaOnly?: boolean, noNegative?: boolean) {
         var k;
@@ -254,9 +331,26 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
                 day = 10 * Number(current_val[5]) + Number(current_val[6]);
 
                 if (index == 0) {
-                    this.ApplicationForm.get("studentBirthDate").setValue(
-                        new Date(year, month - 1, day)
-                    );
+
+
+                    let d = new Date(year, month - 1, day);
+
+                    console.log(d.toLocaleDateString());
+                    this._services.checkStudentBirthDate(moment(d)).subscribe((result) => {
+                        if (result) {
+
+                            this.birthDateValid = true;
+                            this.ApplicationForm.get("studentBirthDate").setValue(
+                                new Date(year, month - 1, day)
+                            );
+                        }
+                        else {
+                            abp.message.error(this.birthDateMinMaxInfo);
+                            this.birthDateValid = false;
+                        }
+                    })
+
+
 
                     // let val_age = new Date().getFullYear() - year;
 
@@ -304,10 +398,24 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
 
         console.log(this.model);
 
-        this._services.createForm(this.model).subscribe((result) => {
-            abp.message.success("Application Created !");
-            this.router.navigate(['../']);
-        })
+        if (this.formId) {
+            this.model.id = this.formId;
+            this._services.update(this.model).subscribe((result) => {
+                abp.message.success("Application Updated !");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            })
+        }
+        else {
+            this._services.createForm(this.model).subscribe((result) => {
+                abp.message.success("Application Created !");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            })
+        }
+
 
     }
 

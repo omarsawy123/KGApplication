@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Test.EntityFrameworkCore;
 
 namespace Test.Migrations
 {
     [DbContext(typeof(TestDbContext))]
-    partial class TestDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211028075559_added settings table")]
+    partial class addedsettingstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1809,9 +1811,6 @@ namespace Test.Migrations
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDefault")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");

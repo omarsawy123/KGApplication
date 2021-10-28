@@ -10,6 +10,7 @@ using System;
 using System.Web;
 using Abp.Domain.Repositories;
 using System.Linq;
+using Test.Settings;
 
 namespace Test.Authorization.Accounts
 {
@@ -21,14 +22,19 @@ namespace Test.Authorization.Accounts
         private readonly UserRegistrationManager _userRegistrationManager;
         private readonly UserManager _userManager;
         private readonly IRepository<User, long> _repository;
+        private readonly IRepository<DefaultSettings, int> _settings;
+
 
         public AccountAppService(
             UserRegistrationManager userRegistrationManager, UserManager userManager
-            , IRepository<User, long> repository)
+            , IRepository<User, long> repository
+            , IRepository<DefaultSettings, int> settings
+            )
         {
             _userRegistrationManager = userRegistrationManager;
             _userManager = userManager;
             _repository = repository;
+            _settings = settings;
         }
 
         public async Task<IsTenantAvailableOutput> IsTenantAvailable(IsTenantAvailableInput input)
@@ -49,10 +55,12 @@ namespace Test.Authorization.Accounts
 
         public void SendEmailConfirmation(string token,int userId,string mail)
         {
+            var setting = _settings.FirstOrDefault(s => s.IsDefault);
 
-            var fromAddress = new MailAddress("omarsawy45@gmail.com", "From DSBA");
+
+            var fromAddress = new MailAddress(setting.DefaultMailAddress, "From DSBA");
             var toAddress = new MailAddress(mail, "To Parent");
-            const string fromPassword = "omarsawy1998";
+            string fromPassword = setting.DefaultMailPassword;
 
             var user = _repository.FirstOrDefault(u => u.Id == userId);
 
@@ -140,7 +148,7 @@ namespace Test.Authorization.Accounts
             || u.UserName == userMailOrName);
 
 
-            if (user.IsEmailConfirmed) return true;
+            if (user != null) return user.IsEmailConfirmed;
 
             return false;
 

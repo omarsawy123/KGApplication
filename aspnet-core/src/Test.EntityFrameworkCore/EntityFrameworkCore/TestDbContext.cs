@@ -7,6 +7,7 @@ using Test.Forms;
 using Test.Dates;
 using Test.TimesTables;
 using Test.ApplicationTimeDates;
+using Test.Settings;
 
 namespace Test.EntityFrameworkCore
 {
@@ -24,6 +25,9 @@ namespace Test.EntityFrameworkCore
         public virtual DbSet<DatesTable> Dates { get; set; }
         public virtual DbSet<TimesTable> TimesTables { get; set; }
         public virtual DbSet<ApplicationTimeDate> ApplicationTimeDates { get; set; }
+
+        public virtual DbSet<DefaultSettings> DefaultSettings { get; set; }
+
 
 
 

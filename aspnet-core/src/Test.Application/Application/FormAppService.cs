@@ -19,6 +19,7 @@ using Test.Dto.Dates;
 using Test.Application.Dto;
 using Abp.Runtime.Session;
 using Test.Dto.ViewForm;
+using Test.Settings;
 
 namespace Test.Forms
 {
@@ -30,6 +31,7 @@ namespace Test.Forms
         private readonly IRepository<Form, int> _formRepository;
         private readonly IRepository<DatesTable, int> _dateRepository;
         private readonly IRepository<TimesTable, int> _timeRepository;
+        private readonly IRepository<DefaultSettings, int> _settingsRepository;
         private readonly IRepository<ApplicationTimeDate, int> _appRepository;
         private readonly IAbpSession _abpSession;
 
@@ -38,7 +40,8 @@ namespace Test.Forms
             , IRepository<DatesTable, int> dateRepository
             , IRepository<TimesTable, int> timeRepository
             , IRepository<ApplicationTimeDate, int> appRepository
-            ,IAbpSession abpSession
+            , IRepository<DefaultSettings,int> settingsRepository
+            , IAbpSession abpSession
             ) : base(repository)
         {
             this._formRepository = repository;
@@ -46,7 +49,9 @@ namespace Test.Forms
             this._timeRepository = timeRepository;
             this._appRepository = appRepository;
             this._abpSession = abpSession;
+            this._settingsRepository = settingsRepository;
         }
+
 
         public async Task CreateForm(FormDto input)
         {
@@ -149,11 +154,35 @@ namespace Test.Forms
         }
 
 
+        public bool CheckApplicationStartEndDate(DateTime dateValue)
+        {
+
+            var date = _settingsRepository.FirstOrDefault(s => s.IsDefault);
+
+            return date.ApplicationStartDate <= dateValue && date.ApplicationEndDate >= dateValue;
+
+        }
+
+        public string GetStudentBirthDateMinMax()
+        {
+            var date = _settingsRepository.FirstOrDefault(s => s.IsDefault);
+
+            return "مواليد تاريخ " + date.StudentBirthDateMin.ToShortDateString() + " الي مواليد تاريخ " + date.StudentBirthDateMax.ToShortDateString();
+
+        }
+
+        public bool CheckStudentBirthDate(DateTime dateValue)
+        {
+            var date = _settingsRepository.FirstOrDefault(s => s.IsDefault);
+
+            return date.StudentBirthDateMin <= dateValue && date.StudentBirthDateMax >= dateValue;
+
+        }
+
         public async Task<int> CheckUserApplication()
         {
 
             var userId = _abpSession.UserId.Value;
-            var app2 = await _appRepository.GetAll().Where(a => a.Id == 1002).FirstOrDefaultAsync();
             var app = await _appRepository.GetAll().Where(a => a.UserId == userId).Include(a => a.FormFk).FirstOrDefaultAsync();
 
             if (app != null)
@@ -169,7 +198,7 @@ namespace Test.Forms
         }
 
         public async Task<ViewFormDto> GetForm(NullableIdDto input)
-        {
+       {
             if (input.Id == null) throw new UserFriendlyException("Please Login Before Viewing Application");
 
             else
@@ -180,8 +209,11 @@ namespace Test.Forms
                     .Include(a => a.TimeFk).Include(a => a.DateFk).FirstOrDefaultAsync();
 
                 ViewFormDto result = new ViewFormDto();
+                
                 result.Form = ObjectMapper.Map<FormDto>(form);
-               
+                result.Form.DateId = app.DateFk.Id;
+                result.Form.TimeId = app.TimeFk.Id;
+
                 result.DateName = app.DateFk.DateName;
                 result.TimeName = app.TimeFk.TimeName;
 
