@@ -64,7 +64,7 @@ namespace Test.Authorization.Accounts
 
             var user = _repository.FirstOrDefault(u => u.Id == userId);
 
-            var uriBuilder = new UriBuilder("http://localhost:4200/account/loginExternal");
+            var uriBuilder = new UriBuilder(setting.DefaultHostName + "/account/loginExternal");
             var parameters = HttpUtility.ParseQueryString(string.Empty);
             parameters["tokenId"] = token;
             parameters["userId"] = userId.ToString();

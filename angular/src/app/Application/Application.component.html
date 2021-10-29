@@ -189,7 +189,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div *ngIf="chooseDate&&!ViewApp">
+                                    <div *ngIf="chooseDate">
                                         <div class="pr-3 pb-3 pe-3 w-auto">
 
                                             <bs-datepicker-inline (bsValueChange)="dateChanged($event)"
@@ -199,7 +199,8 @@
                                         </div>
                                         <div class="row" style="margin-bottom: 15px;">
                                             <div class="col-md-3">
-                                                <select class="form-control" id="timeList" formControlName="formTime">
+                                                <select class="form-control" (change)="timeChanged($event.target.value)"
+                                                    id="timeList" formControlName="formTime">
                                                     <option value="" disabled selected>Select Time</option>
                                                     <option *ngFor="let tm of timetable" [value]="tm.id">
                                                         {{tm.timeName}}
@@ -207,18 +208,10 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="alert alert-primary" role="alert">
-                                                    Selected Date is : {{dateName}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- {{ApplicationForm.value|json}} -->
                                     </div>
                                     <div class="row" *ngIf="chooseDate&&ViewApp">
                                         <div class="col-md-3">
-                                            <div class="alert alert-primary" role="alert">
+                                            <div class="alert alert-success" role="alert">
                                                 Selected Date is : {{dateName}} , Selected Time is :{{timeName}}
                                             </div>
                                         </div>

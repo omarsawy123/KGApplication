@@ -16,7 +16,7 @@ namespace Test.Forms
     public interface IFormAppService : IAsyncCrudAppService<FormDto>
     {
         Task<ViewFormDto> GetForm(NullableIdDto input);
-        Task CreateForm(FormDto input);
+        Task<FormDto> CreateForm(FormDto input);
         Task<List<TimeTableDto>> GetAllTimes(int dateId);
         public Task<int> CheckUserApplication();
          Task<List<DatesDto>> GetAllDates();

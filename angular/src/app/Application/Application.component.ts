@@ -139,8 +139,8 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
             studentRelativeName: [''],
             studentRelativeGrade: [''],
             joiningSchool: ['', Validators.required],
-            formTime: [''],
-            formDate: [''],
+            formTime: ['', Validators.required],
+            formDate: ['', Validators.required],
         })
 
         this._services.getAllDates().subscribe((result) => {
@@ -221,7 +221,7 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
         return this.ApplicationForm.controls;
     }
 
-    
+
 
     checkPattern(event, alphaOnly?: boolean, noNegative?: boolean) {
         var k;
@@ -261,10 +261,18 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
                 this.timetable = d.timeTable;
                 this.dateId = d.id;
                 this.dateName = d.dateName;
+                this.timeName = "";
+                this.ApplicationForm.get('formTime').setValue('');
             }
 
         }
 
+
+    }
+
+    timeChanged(value: number) {
+
+        this.timeName = this.timetable.find(t => t.id == value).timeName;
 
     }
 
@@ -298,6 +306,8 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
         }
 
     }
+
+
 
     getAgeAndBirthDate() {
 
@@ -400,7 +410,7 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
 
         if (this.formId) {
             this.model.id = this.formId;
-            this._services.update(this.model).subscribe((result) => {
+            this._services.updateForm(this.model).subscribe((result) => {
                 abp.message.success("Application Updated !");
                 setTimeout(() => {
                     window.location.reload();

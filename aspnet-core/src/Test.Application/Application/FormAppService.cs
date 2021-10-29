@@ -53,7 +53,7 @@ namespace Test.Forms
         }
 
 
-        public async Task CreateForm(FormDto input)
+        public async Task<FormDto> CreateForm(FormDto input)
         {
 
             if (_formRepository.GetAll().Where(s => s.StudentNationalId == input.StudentNationalId).FirstOrDefault() == null)
@@ -62,6 +62,7 @@ namespace Test.Forms
                 var form = ObjectMapper.Map<Form>(input);
 
                 var newForm = await _formRepository.InsertAsync(form);
+
 
                 var AppTimeDate = new ApplicationTimeDate();
 
@@ -89,9 +90,9 @@ namespace Test.Forms
                
                 AppTimeDate.TimeFk = await _timeRepository.GetAsync((int)input.TimeId);
 
-                var t = await _timeRepository.GetAsync((int)input.TimeId);
-                t.IsEnabled = false;
-                await _timeRepository.UpdateAsync(t);
+                //var t = await _timeRepository.GetAsync((int)input.TimeId);
+                //t.IsEnabled = false;
+                //await _timeRepository.UpdateAsync(t);
 
                 AppTimeDate.FormFk = newForm;
                 AppTimeDate.TenantId = 1;
@@ -101,7 +102,7 @@ namespace Test.Forms
 
                 await _appRepository.InsertAsync(AppTimeDate);
 
-                
+                return ObjectMapper.Map<FormDto>(newForm);
 
             }
 
@@ -113,12 +114,67 @@ namespace Test.Forms
 
         }
 
-        //public async Task<DateTimeApplicationDto> GetDateTimeApplication()
-        //{
+        public async Task<FormDto> UpdateForm(FormDto input)
+        {
+            if (_formRepository.GetAll().Where(s => s.StudentNationalId == input.StudentNationalId).Count() == 1)
+            {
 
-        //    _
+                var form = ObjectMapper.Map<Form>(input);
 
-        //}
+                var updatedForm = await _formRepository.UpdateAsync(form);
+
+
+                var AppTimeDate = await _appRepository.FirstOrDefaultAsync(a => a.FormFk.Id == input.Id);
+
+                if (_appRepository.GetAll().Where(a => a.DateFk.Id == input.DateId).Count() == 59)
+                {
+                    var d = await _dateRepository.GetAsync((int)input.DateId);
+                    d.IsEnabled = false;
+                    await _dateRepository.UpdateAsync(d);
+
+                }
+
+                AppTimeDate.DateFk = await _dateRepository.GetAsync((int)input.DateId);
+
+                //if (_appRepository.FirstOrDefault(a => a.TimeFk.Id == input.TimeId) == null)
+                //{
+                //    var t = await _timeRepository.GetAsync((int)input.TimeId);
+                //    t.IsEnabled = false;
+                //    await _timeRepository.UpdateAsync(t);
+
+                //    AppTimeDate.TimeFk = await _timeRepository.GetAsync((int)input.TimeId);
+
+                //}
+
+
+
+                AppTimeDate.TimeFk = await _timeRepository.GetAsync((int)input.TimeId);
+
+                //var t = await _timeRepository.GetAsync((int)input.TimeId);
+                //t.IsEnabled = false;
+                //await _timeRepository.UpdateAsync(t);
+
+                //AppTimeDate.FormFk = updatedForm;
+                AppTimeDate.TenantId = 1;
+                AppTimeDate.IsDeleted = false;
+                AppTimeDate.LastModificationTime = DateTime.Now;
+                AppTimeDate.UserId = (int)_abpSession.UserId.Value;
+
+                await _appRepository.UpdateAsync(AppTimeDate);
+
+                return ObjectMapper.Map<FormDto>(updatedForm);
+
+            }
+
+            else
+            {
+
+                throw new UserFriendlyException("Student NationalID Already Exists!");
+
+            }
+        }
+
+
 
         public async Task <List<DatesDto>> GetAllDates()
         {

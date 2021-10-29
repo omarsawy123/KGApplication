@@ -12,6 +12,8 @@ namespace Test.Settings
     public class DefaultSettings:FullAuditedEntity, IMustHaveTenant
     {
         [Required]
+        public string DefaultHostName { get; set; }
+        [Required]
         public string DefaultMailAddress { get; set; }
         [Required]
         public string DefaultMailPassword { get; set; }
