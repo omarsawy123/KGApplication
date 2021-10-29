@@ -55,6 +55,8 @@ export class ViewApplicationComponent implements OnInit {
             }
 
         })
+        
+
         // const nav = this.router.getCurrentNavigation();
         // this.formId = nav.extras.state ? nav.extras.state.formId : 0;
         // if (this.formId != 0) {
@@ -73,7 +75,6 @@ export class ViewApplicationComponent implements OnInit {
                 content: [{
                     image: dataUrl,
                     width: 500,
-                    //height: 500,
                     margin: [0, -10, 0, 0],
                 },
                 ],

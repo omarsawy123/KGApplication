@@ -74,6 +74,12 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
         'fa fa-eye',
         'Pages.Application'
       ),
+      new MenuItem(
+        this.l('Applications List'),
+        '/app/applicationlist',
+        'fa fa-list',
+        'Pages.Application'
+      ),
     ];
   }
 

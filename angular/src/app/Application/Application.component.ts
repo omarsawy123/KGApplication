@@ -28,8 +28,6 @@ pdfMake.fonts = {
     },
 }
 
-import { fromEvent } from 'rxjs';
-import { pathToFileURL } from 'url';
 
 // export function getTimepickerConfig(): TimepickerConfig {
 
@@ -97,8 +95,10 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
         super(inject);
 
         let d = new Date();
+        var diff = d.getTimezoneOffset() * -1;
 
-        this._services.checkApplicationStartEndDate(moment(d)).subscribe((result) => {
+
+        this._services.checkApplicationStartEndDate(moment(d).add(diff, "minutes")).subscribe((result) => {
             if (!result) {
                 this.invalidDate = true;
             }

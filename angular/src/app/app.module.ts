@@ -44,6 +44,10 @@ import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
 import { ApplicationComponent } from './Application/Application.component';
 import { ViewApplicationComponent } from './Application/ViewApplication.component';
+import { ApplicationListComponent } from './Application/ApplicationsList.component';
+
+
+
 
 @NgModule({
   declarations: [
@@ -78,6 +82,7 @@ import { ViewApplicationComponent } from './Application/ViewApplication.componen
     //Application
     ApplicationComponent,
     ViewApplicationComponent,
+    ApplicationListComponent,
 
   ],
   imports: [
