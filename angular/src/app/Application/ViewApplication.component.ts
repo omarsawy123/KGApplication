@@ -45,6 +45,7 @@ export class ViewApplicationComponent implements OnInit {
                     this.timeName = frm.timeName;
                     console.log(frm);
                     this.ngOnInit();
+                    this.noApplication = false;
                 })
                 // this.ViewApp = true;
                 // this.router.navigate(['/app/viewapplication'], { state: { formId: result } })
@@ -62,6 +63,27 @@ export class ViewApplicationComponent implements OnInit {
         //     });
 
         // }
+    }
+
+    printStudentPdf() {
+
+        htmlToImage.toPng(this.pdfArabicData.nativeElement).then(function (dataUrl) {
+
+            var docDefinition = {
+                content: [{
+                    image: dataUrl,
+                    width: 500,
+                    //height: 500,
+                    margin: [0, -10, 0, 0],
+                },
+                ],
+                pageMargins: [72, 72, 72, 100]//Left,Top,Right,Bottom
+            };
+
+            pdfMake.createPdf(docDefinition).open();
+        })
+
+
     }
 
     printPdf() {
@@ -121,6 +143,7 @@ export class ViewApplicationComponent implements OnInit {
                 ],
                 pageMargins: [72, 72, 72, 100]//Left,Top,Right,Bottom
             };
+
             pdfMake.createPdf(docDefinition).open();
         })
 
