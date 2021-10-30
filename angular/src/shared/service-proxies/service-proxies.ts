@@ -387,6 +387,80 @@ export class FormServiceProxy {
     }
 
     /**
+     * @param keyword (optional) 
+     * @param dateId (optional) 
+     * @param timeId (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAllForms(keyword: string | null | undefined, dateId: number | undefined, timeId: number | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<FormListDtoPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/Form/GetAllForms?";
+        if (keyword !== undefined && keyword !== null)
+            url_ += "Keyword=" + encodeURIComponent("" + keyword) + "&";
+        if (dateId === null)
+            throw new Error("The parameter 'dateId' cannot be null.");
+        else if (dateId !== undefined)
+            url_ += "DateId=" + encodeURIComponent("" + dateId) + "&";
+        if (timeId === null)
+            throw new Error("The parameter 'timeId' cannot be null.");
+        else if (timeId !== undefined)
+            url_ += "TimeId=" + encodeURIComponent("" + timeId) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllForms(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllForms(<any>response_);
+                } catch (e) {
+                    return <Observable<FormListDtoPagedResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FormListDtoPagedResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllForms(response: HttpResponseBase): Observable<FormListDtoPagedResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FormListDtoPagedResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FormListDtoPagedResultDto>(<any>null);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -3618,6 +3692,124 @@ export class ChangeUiThemeInput implements IChangeUiThemeInput {
 
 export interface IChangeUiThemeInput {
     theme: string;
+}
+
+export class FormListDto implements IFormListDto {
+    studentName: string | undefined;
+    studentNameAr: string | undefined;
+    formDate: moment.Moment;
+    formTime: moment.Moment;
+    tenantId: number;
+    id: number;
+
+    constructor(data?: IFormListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.studentName = _data["studentName"];
+            this.studentNameAr = _data["studentNameAr"];
+            this.formDate = _data["formDate"] ? moment(_data["formDate"].toString()) : <any>undefined;
+            this.formTime = _data["formTime"] ? moment(_data["formTime"].toString()) : <any>undefined;
+            this.tenantId = _data["tenantId"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): FormListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FormListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["studentName"] = this.studentName;
+        data["studentNameAr"] = this.studentNameAr;
+        data["formDate"] = this.formDate ? this.formDate.toISOString() : <any>undefined;
+        data["formTime"] = this.formTime ? this.formTime.toISOString() : <any>undefined;
+        data["tenantId"] = this.tenantId;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): FormListDto {
+        const json = this.toJSON();
+        let result = new FormListDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IFormListDto {
+    studentName: string | undefined;
+    studentNameAr: string | undefined;
+    formDate: moment.Moment;
+    formTime: moment.Moment;
+    tenantId: number;
+    id: number;
+}
+
+export class FormListDtoPagedResultDto implements IFormListDtoPagedResultDto {
+    totalCount: number;
+    items: FormListDto[] | undefined;
+
+    constructor(data?: IFormListDtoPagedResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(FormListDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): FormListDtoPagedResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FormListDtoPagedResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): FormListDtoPagedResultDto {
+        const json = this.toJSON();
+        let result = new FormListDtoPagedResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IFormListDtoPagedResultDto {
+    totalCount: number;
+    items: FormListDto[] | undefined;
 }
 
 export class FormDto implements IFormDto {
