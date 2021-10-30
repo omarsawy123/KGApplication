@@ -20,6 +20,9 @@ using Test.Application.Dto;
 using Abp.Runtime.Session;
 using Test.Dto.ViewForm;
 using Test.Settings;
+using Test.Dto.FormsList;
+using Abp.Linq.Extensions;
+using Abp.Extensions;
 
 namespace Test.Forms
 {
@@ -52,6 +55,46 @@ namespace Test.Forms
             this._settingsRepository = settingsRepository;
         }
 
+
+        public async Task<PagedResultDto<FormListDto>> GetAllForms(FormInput Input)
+        {
+            
+            var query=(from 
+                       f in _formRepository.GetAll()
+                       .WhereIf(!Input.Keyword.IsNullOrWhiteSpace()
+                       , f=>f.StudentName.Contains(Input.Keyword)
+                       ||f.StudentNameAr.Contains(Input.Keyword)) join
+                       
+                       a in _appRepository.GetAll() on f.Id equals a.FormFk.Id join
+                       
+                       d in _dateRepository.GetAll()
+                       .WhereIf(Input.DateId!=0,d=>d.Id==Input.DateId) on a.DateFk.Id equals d.Id join
+                       
+                       t in _timeRepository.GetAll()
+                       .WhereIf(Input.TimeId != 0, t => t.Id == Input.TimeId)
+                       on a.TimeFk.Id equals t.Id
+                       
+                       select new FormListDto
+                       {
+                           StudentName=f.StudentName,
+                           StudentNameAr=f.StudentNameAr,
+                           FormDate=d.DateValue,
+                           FormTime=t.TimeValue,
+                           TenantId=1,
+                           Id=f.Id,
+                       }
+                       );
+
+
+            var forms = await query.OrderBy(q => q.FormDate).Skip(Input.SkipCount).Take(Input.MaxResultCount).ToListAsync();
+
+            return new PagedResultDto<FormListDto>(query.Count(), forms);
+
+            //return new PagedResultDto<FormListDto>(query.Count()
+            //    , (IReadOnlyList<FormListDto>)ObjectMapper.Map<PagedResultDto<FormListDto>>(query)); 
+
+
+        }
 
         public async Task<FormDto> CreateForm(FormDto input)
         {
