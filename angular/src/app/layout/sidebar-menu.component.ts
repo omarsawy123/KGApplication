@@ -78,7 +78,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
         this.l('Applications List'),
         '/app/applicationlist',
         'fa fa-list',
-        'Pages.Application'
+        'Pages.Application.List'
       ),
     ];
   }

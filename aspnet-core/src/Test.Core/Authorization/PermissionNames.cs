@@ -10,5 +10,8 @@
 
         public const string Pages_Application = "Pages.Application";
 
+        public const string Pages_Application_List = "Pages.Application.List";
+
+
     }
 }

@@ -12,6 +12,9 @@ namespace Test.Authorization
             context.CreatePermission(PermissionNames.Pages_Roles, L("Roles"));
             context.CreatePermission(PermissionNames.Pages_Application, L("Application"));
 
+            context.CreatePermission(PermissionNames.Pages_Application_List, L("ApplicationsList"));
+
+
             context.CreatePermission(PermissionNames.Pages_Tenants, L("Tenants"), multiTenancySides: MultiTenancySides.Host);
         }
 
