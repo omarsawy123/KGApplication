@@ -110,7 +110,7 @@ namespace Test.Forms
 
                 var AppTimeDate = new ApplicationTimeDate();
 
-                if (_appRepository.GetAll().Where(a => a.DateFk.Id == input.DateId).Count() == 59)
+                if (_appRepository.GetAll().Where(a => a.DateFk.Id == input.DateId).Count() == 34)
                 {
                     var d = await _dateRepository.GetAsync((int)input.DateId);
                     d.IsEnabled = false;
@@ -170,7 +170,7 @@ namespace Test.Forms
 
                 var AppTimeDate = await _appRepository.FirstOrDefaultAsync(a => a.FormFk.Id == input.Id);
 
-                if (_appRepository.GetAll().Where(a => a.DateFk.Id == input.DateId).Count() == 59)
+                if (_appRepository.GetAll().Where(a => a.DateFk.Id == input.DateId).Count() == 34)
                 {
                     var d = await _dateRepository.GetAsync((int)input.DateId);
                     d.IsEnabled = false;

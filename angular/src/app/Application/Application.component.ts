@@ -84,6 +84,7 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     invalidDate: boolean = false;
     birthDateValid: boolean = true;
     birthDateMinMaxInfo: string;
+    saving: boolean;
     // enabledDates = [
     //     new Date('2021-10-20'),
     //     new Date('2021-10-22'),
@@ -278,6 +279,8 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
                 this.dateName = d.dateName;
                 this.timeName = "";
                 this.ApplicationForm.get('formTime').setValue('');
+                this.ApplicationForm.get('formDate').setValue(d.id);
+
 
 
 
@@ -404,7 +407,6 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
         this.model.studentName = this.ApplicationForm.controls.studentName.value;
         this.model.studentNameAr = this.ApplicationForm.controls.studentNameAr.value;
         this.model.studentNationalId = +this.ApplicationForm.controls.studentNationalId.value;
-        // moment(this.activity_Form.get('startDate').value).add(diff, 'minutes');
         this.model.studentBirthDate = moment(this.ApplicationForm.controls.studentBirthDate.value).add(diff, 'minutes');
         this.model.studentReligion = this.ApplicationForm.controls.studentReligion.value;
         this.model.fatherMobile = this.ApplicationForm.controls.fatherMobile.value;
@@ -426,9 +428,12 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
 
         console.log(this.model);
 
+        this.saving = true;
+
+
         if (this.formId) {
             this.model.id = this.formId;
-            this._services.updateForm(this.model).subscribe((result) => {
+            this._services.updateForm(this.model).subscribe(() => {
                 abp.message.success("Application Updated !");
                 setTimeout(() => {
                     window.location.reload();
@@ -436,7 +441,7 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
             })
         }
         else {
-            this._services.createForm(this.model).subscribe((result) => {
+            this._services.createForm(this.model).subscribe(() => {
                 abp.message.success("Application Created !");
                 setTimeout(() => {
                     window.location.reload();

@@ -215,6 +215,7 @@
                                                 Selected Date is : {{dateName}} , Selected Time is :{{timeName}}
                                             </div>
                                         </div>
+                                        {{ApplicationForm.value|json}}
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3">
@@ -225,7 +226,7 @@
                                                 *ngIf="chooseDate" (click)="chooseDate=false">Back</button>
 
                                             <button *ngIf="chooseDate&&birthDateValid" class="btn btn-success"
-                                                [disabled]="ApplicationForm.invalid" type="submit">Save</button>
+                                                [disabled]="ApplicationForm.invalid||saving" type="submit">Save</button>
 
                                         </div>
                                     </div>
