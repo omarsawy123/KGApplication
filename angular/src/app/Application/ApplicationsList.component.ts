@@ -1,9 +1,11 @@
 import { Time } from '@angular/common';
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
-import { FormDto, FormListDto, FormListDtoPagedResultDto, FormServiceProxy, UserDtoPagedResultDto } from '@shared/service-proxies/service-proxies';
+import { DateDropDownDto, FormDto, FormListDto, FormListDtoPagedResultDto, FormServiceProxy, TimeDropDownDto, UserDtoPagedResultDto } from '@shared/service-proxies/service-proxies';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
+import { ViewApplicationComponent } from './ViewApplication.component';
 
 class PagedApplicationRequestDto extends PagedRequestDto {
     keyword: string;
@@ -25,13 +27,44 @@ export class ApplicationListComponent extends PagedListingComponentBase<FormDto>
     keyword = '';
     isActive: boolean | null;
     advancedFiltersVisible = false;
+    dateId: number = 0;
+    timeId: number = 0;
+    dates_List: DateDropDownDto[] = [];
+    times_List: TimeDropDownDto[] = [];
 
-    constructor(injector: Injector, private _services: FormServiceProxy) {
+
+    constructor(injector: Injector, private _services: FormServiceProxy, private _modalServices: BsModalService) {
         super(injector);
+        this._services.getAllDatesForDropDown().subscribe((result) => {
+            this.dates_List = result;
+        })
+
+        this._services.getAllTimesForDropDown().subscribe((result) => {
+            this.times_List = result;
+        })
+    }
+
+    ngOnInit() {
+
+        this.refresh();
 
     }
 
-    ngOnInit() { }
+    viewForm(id: number) {
+
+        this._services.getForm(id).subscribe((result) => {
+
+            this._modalServices.show(ViewApplicationComponent, {
+                class: 'modal-xl',
+                initialState: {
+                    form: result.form,
+                    dateName: result.dateName,
+                    timeName: result.timeName,
+                    printType: 1
+                }
+            })
+        })
+    }
 
     protected list(
         request: PagedApplicationRequestDto,
@@ -39,6 +72,8 @@ export class ApplicationListComponent extends PagedListingComponentBase<FormDto>
         finishedCallback: Function
     ): void {
         request.keyword = this.keyword;
+        request.dateId = this.dateId;
+        request.timeId = this.timeId;
 
         this._services
             .getAllForms(

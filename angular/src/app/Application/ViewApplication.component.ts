@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { FormDto, FormServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -26,46 +26,43 @@ export class ViewApplicationComponent implements OnInit {
     dateName: string = "";
     timeName: string = "";
     loading: boolean = false;
+    printType: number = 0;
 
     // @ViewChild('print') print:
     @ViewChild('pdfArabicData') pdfArabicData: ElementRef;
     @ViewChild('pdfHeader') pdfHeader: ElementRef;
-    noApplication: boolean;
+    noApplication: boolean = true;
 
 
 
-    constructor(private router: Router, private _services: FormServiceProxy) {
+
+    constructor(private router: Router, private _services: FormServiceProxy, private cdRef: ChangeDetectorRef) {
+
+
+    }
+
+    ngOnInit() {
 
         this._services.checkUserApplication().subscribe((result) => {
             console.log(result);
             if (result != 0) {
+                this.noApplication = false;
                 this._services.getForm(result).subscribe((frm) => {
                     this.form = frm.form;
                     this.dateName = frm.dateName;
                     this.timeName = frm.timeName;
-                    console.log(frm);
-                    this.ngOnInit();
-                    this.noApplication = false;
+                    this.cdRef.detectChanges();
                 })
-                // this.ViewApp = true;
-                // this.router.navigate(['/app/viewapplication'], { state: { formId: result } })
             }
-            else {
-                this.noApplication = true;
+            else if (this.form != null) {
+                this.noApplication = false;
+                this.cdRef.detectChanges();
             }
-
         })
-        
 
-        // const nav = this.router.getCurrentNavigation();
-        // this.formId = nav.extras.state ? nav.extras.state.formId : 0;
-        // if (this.formId != 0) {
-        //     this._services.getForm(this.formId).subscribe((result) => {
-        //         // this.form = result;
-        //     });
-
-        // }
     }
+
+
 
     printStudentPdf() {
 
@@ -83,6 +80,12 @@ export class ViewApplicationComponent implements OnInit {
 
             pdfMake.createPdf(docDefinition).open();
         })
+
+    }
+
+
+
+    printAllPdf() {
 
 
     }
@@ -106,11 +109,11 @@ export class ViewApplicationComponent implements OnInit {
                     columns: [
                         {
                             text: 'Gruppe: ...............',
-                            margin: [0, 15, 0, 0]
+                            margin: [0, 10, 0, 0]
                         },
                         {
                             text: 'Datum: ................',
-                            margin: [0, 15, 0, 0]
+                            margin: [0, 10, 0, 0]
 
                         },
 
@@ -118,7 +121,7 @@ export class ViewApplicationComponent implements OnInit {
                 },
                 {
                     text: 'Prüfer: .............../...............',
-                    margin: [0, 20, 0, 20]
+                    margin: [0, 10, 0, 20]
                 },
                 {
                     alignment: 'center',
@@ -139,20 +142,17 @@ export class ViewApplicationComponent implements OnInit {
                 },
                 {
                     text: 'Sonstige Beobachtungen',
-                    margin: [0, 10, 0, 0]
+                    margin: [0, 5, 0, 0]
                 }
                 ],
                 pageMargins: [72, 72, 72, 100]//Left,Top,Right,Bottom
             };
+
 
             pdfMake.createPdf(docDefinition).open();
         })
 
     }
 
-    ngOnInit() {
 
-
-
-    }
 }

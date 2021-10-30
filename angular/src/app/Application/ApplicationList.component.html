@@ -1,0 +1,150 @@
+<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1>{{ "Forms" | localize }}</h1>
+                </div>
+                <div class="col-6 text-right">
+                    <a href="javascript:;" class="btn bg-blue">
+                        <i class="fa fa-print"></i>
+                        {{ "Print All" | localize }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <button type="button" class="btn bg-blue" (click)="getDataPage(1)">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <input type="text" class="form-control" name="keyword" placeholder="Search With Student Name "
+                            [(ngModel)]="keyword" (input)="getDataPage(1)" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-default"
+                                (click)="advancedFiltersVisible = !advancedFiltersVisible">
+                                <i class="fas" [class.fa-angle-up]="advancedFiltersVisible"
+                                    [class.fa-angle-down]="!advancedFiltersVisible"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="advancedFiltersVisible" class="card mb-0 mt-1">
+                        <div class="card-body">
+                            <form class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row mb-0">
+                                            <label for="dateFilter">
+                                                {{ "Date" | localize }}
+                                            </label>
+                                            <div class="col-md-3 pt-2">
+                                                <select *ngIf="dates_List.length>0" (change)="refresh()"
+                                                    class="form-control" id="dateFilter"
+                                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="dateId">
+                                                    <option value=0>All</option>
+                                                    <option *ngFor="let dt of dates_List" [value]="dt.id">
+                                                        {{dt.dateName}}
+                                                    </option>
+
+                                                </select>
+                                            </div>
+                                            <label for="timeFilter">
+                                                {{ "Time" | localize }}
+                                            </label>
+                                            <div class="col-md-3 pt-2">
+                                                <select class="form-control" (change)="refresh()"
+                                                    *ngIf="times_List.length>0" id="timeFilter" [(ngModel)]="timeId"
+                                                    [ngModelOptions]="{standalone: true}">
+                                                    <option value=0>All</option>
+                                                    <option *ngFor="let tm of times_List" [value]="tm.id">
+                                                        {{tm.timeName}}
+                                                    </option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn bg-blue" (click)="getDataPage(1)">
+                                {{ "Search" | localize }}
+                            </button>
+                            <button type="button" class="btn btn-default float-right" (click)="clearFilters()">
+                                {{ "Clear" | localize }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap" [busy]="isTableLoading">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>{{ "Student Name" | localize }}</th>
+                                <th>{{ "Student Name Ar" | localize }}</th>
+                                <th>{{ "Date" | localize }}</th>
+                                <th>{{ "Time" | localize }}</th>
+                                <th style="width: 310px;">{{ "Actions" | localize }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="
+                    let frm of forms
+                      | paginate
+                        : {
+                            id: 'server',
+                            itemsPerPage: pageSize,
+                            currentPage: pageNumber,
+                            totalItems: totalItems
+                          }
+                  ">
+                                <td>{{ frm.studentName }}</td>
+                                <td>{{ frm.studentNameAr }}</td>
+                                <td>{{ frm.formDate |date:'dd/MM/yyyy'}}</td>
+                                <td>{{ frm.formTime |date:'HH:mm'}}</td>
+                                <td>
+                                    <!-- <button type="button" class="btn btn-sm bg-primary" (click)="printForm()">
+                                        <i class="fas fa-print"></i>
+                                        {{ "Print" | localize }}
+                                    </button> -->
+                                    <button type="button" class="btn btn-sm bg-success" (click)="viewForm(frm.id)">
+                                        <i class="fas fa-eye"></i>
+                                        {{ "View" | localize }}
+                                    </button>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer bg-light border-top">
+                    <div class="row">
+                        <div class="col-sm-4 col-12 text-sm-left text-center">
+                            <button class="btn btn-secondary" (click)="refresh()">
+                                <i class="fas fa-redo-alt"></i>
+                            </button>
+                        </div>
+                        <div class="col-sm-4 col-12 text-center">
+                            <p class="mb-0 my-2">
+                                {{ "TotalRecordsCount" | localize: totalItems }}
+                            </p>
+                        </div>
+                        <div class="col-sm-4 col-12">
+                            <div class="float-sm-right m-auto">
+                                <abp-pagination-controls id="server" (pageChange)="getDataPage($event)">
+                                </abp-pagination-controls>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -461,6 +461,122 @@ export class FormServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getAllDatesForDropDown(): Observable<DateDropDownDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Form/GetAllDatesForDropDown";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllDatesForDropDown(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllDatesForDropDown(<any>response_);
+                } catch (e) {
+                    return <Observable<DateDropDownDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DateDropDownDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllDatesForDropDown(response: HttpResponseBase): Observable<DateDropDownDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(DateDropDownDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DateDropDownDto[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllTimesForDropDown(): Observable<TimeDropDownDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Form/GetAllTimesForDropDown";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllTimesForDropDown(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllTimesForDropDown(<any>response_);
+                } catch (e) {
+                    return <Observable<TimeDropDownDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<TimeDropDownDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllTimesForDropDown(response: HttpResponseBase): Observable<TimeDropDownDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(TimeDropDownDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TimeDropDownDto[]>(<any>null);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -3810,6 +3926,100 @@ export class FormListDtoPagedResultDto implements IFormListDtoPagedResultDto {
 export interface IFormListDtoPagedResultDto {
     totalCount: number;
     items: FormListDto[] | undefined;
+}
+
+export class DateDropDownDto implements IDateDropDownDto {
+    dateName: string | undefined;
+    id: number;
+
+    constructor(data?: IDateDropDownDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.dateName = _data["dateName"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): DateDropDownDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DateDropDownDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["dateName"] = this.dateName;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): DateDropDownDto {
+        const json = this.toJSON();
+        let result = new DateDropDownDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDateDropDownDto {
+    dateName: string | undefined;
+    id: number;
+}
+
+export class TimeDropDownDto implements ITimeDropDownDto {
+    id: number;
+    timeName: string | undefined;
+
+    constructor(data?: ITimeDropDownDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.timeName = _data["timeName"];
+        }
+    }
+
+    static fromJS(data: any): TimeDropDownDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeDropDownDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["timeName"] = this.timeName;
+        return data; 
+    }
+
+    clone(): TimeDropDownDto {
+        const json = this.toJSON();
+        let result = new TimeDropDownDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITimeDropDownDto {
+    id: number;
+    timeName: string | undefined;
 }
 
 export class FormDto implements IFormDto {
