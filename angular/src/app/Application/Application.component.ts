@@ -255,14 +255,32 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
 
         if (val) {
 
+
+            // get date value
             let d = this.Dates.find(d => d.dateValue.toDate().toLocaleDateString() == val.toLocaleDateString())
 
+
+            // change selected date color
+            this.dateCustomClasses.forEach((dt) => {
+                if (dt.date.toLocaleDateString() == val.toLocaleDateString()) {
+                    dt.classes = ['bg-sucess']
+                }
+                else {
+                    dt.classes = ['bg-primary']
+                }
+            })
+
+            // assign date and time values
             if (d) {
+
                 this.timetable = d.timeTable;
                 this.dateId = d.id;
                 this.dateName = d.dateName;
                 this.timeName = "";
                 this.ApplicationForm.get('formTime').setValue('');
+
+
+
             }
 
         }
