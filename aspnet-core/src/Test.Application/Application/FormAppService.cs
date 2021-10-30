@@ -23,6 +23,8 @@ using Test.Settings;
 using Test.Dto.FormsList;
 using Abp.Linq.Extensions;
 using Abp.Extensions;
+using Test.Dto.DatesDropDown;
+using Test.Dto.TimesDropDownDto;
 
 namespace Test.Forms
 {
@@ -94,6 +96,40 @@ namespace Test.Forms
             //return new PagedResultDto<FormListDto>(query.Count()
             //    , (IReadOnlyList<FormListDto>)ObjectMapper.Map<PagedResultDto<FormListDto>>(query)); 
 
+
+        }
+
+        public List<DateDropDownDto> GetAllDatesForDropDown()
+        {
+
+            var query =  (from d in _dateRepository.GetAll()
+                        select new DateDropDownDto
+                        {
+
+                            DateName = d.DateName,
+                            id = d.Id
+
+                        }).ToList();
+
+
+            return query;
+
+        }
+
+        public List<TimeDropDownDto> GetAllTimesForDropDown()
+        {
+
+            var query =  (from t in _timeRepository.GetAll()
+                               select new TimeDropDownDto
+                               {
+
+                                   TimeName = t.TimeName,
+                                   id = t.Id
+
+                               }).ToList();
+
+
+            return query;
 
         }
 

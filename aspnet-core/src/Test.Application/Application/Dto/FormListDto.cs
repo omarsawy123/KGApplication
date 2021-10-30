@@ -11,6 +11,7 @@ namespace Test.Dto.FormsList
         public string StudentNameAr { get; set; }
         public DateTime FormDate { get; set; }
         public DateTime FormTime { get; set; }
+
         public int TenantId { get; set; }
 
 
