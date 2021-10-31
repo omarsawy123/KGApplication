@@ -4287,6 +4287,7 @@ export class ViewFormDto implements IViewFormDto {
     form: FormDto;
     dateName: string | undefined;
     timeName: string | undefined;
+    dayName: string | undefined;
     days: number;
     months: number;
     years: number;
@@ -4305,6 +4306,7 @@ export class ViewFormDto implements IViewFormDto {
             this.form = _data["form"] ? FormDto.fromJS(_data["form"]) : <any>undefined;
             this.dateName = _data["dateName"];
             this.timeName = _data["timeName"];
+            this.dayName = _data["dayName"];
             this.days = _data["days"];
             this.months = _data["months"];
             this.years = _data["years"];
@@ -4323,6 +4325,7 @@ export class ViewFormDto implements IViewFormDto {
         data["form"] = this.form ? this.form.toJSON() : <any>undefined;
         data["dateName"] = this.dateName;
         data["timeName"] = this.timeName;
+        data["dayName"] = this.dayName;
         data["days"] = this.days;
         data["months"] = this.months;
         data["years"] = this.years;
@@ -4341,6 +4344,7 @@ export interface IViewFormDto {
     form: FormDto;
     dateName: string | undefined;
     timeName: string | undefined;
+    dayName: string | undefined;
     days: number;
     months: number;
     years: number;

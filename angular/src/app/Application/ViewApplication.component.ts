@@ -34,8 +34,18 @@ export class ViewApplicationComponent implements OnInit {
     @ViewChild('pdfArabicData') pdfArabicData: ElementRef;
     @ViewChild('pdfHeader') pdfHeader: ElementRef;
     noApplication: boolean = true;
+    dayName: string;
 
+    daysArabic = {
+        Sunday: 'الأحد',
+        Monday: 'الإثنين',
+        Tuesday: 'الثلاثاء',
+        Wednesday: 'الأربعاء',
+        Thursday: 'الخميس',
+        Friday: 'الجمعة',
+        Saturday: 'السبت',
 
+    }
 
 
     constructor(private router: Router, private _services: FormServiceProxy, private cdRef: ChangeDetectorRef) {
@@ -56,6 +66,7 @@ export class ViewApplicationComponent implements OnInit {
                     this.year = frm.years;
                     this.month = frm.months;
                     this.day = frm.days;
+                    this.dayName = this.daysArabic[frm.dayName];
 
                     this.cdRef.detectChanges();
                 })

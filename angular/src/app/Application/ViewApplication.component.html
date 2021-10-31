@@ -28,15 +28,15 @@
                                         <img style="width: 45%;" src="assets/img/logo.png">
                                     </div>
                                     <div class="col-md-4">
-                                        <h4 style="text-align: center;margin: auto;font-size: 18px;">
+                                        <h4 style="text-align: center;margin: auto;font-size: 18px;font-weight: bold;">
                                             Deutsche Schule der Borromäerinnen Alexandria
-                                            Kindergarten-Aufnahme 2021-2022
+                                            Kindergarten-Aufnahme <br /> 2021-2022
                                         </h4>
                                     </div>
                                     <div class="col-md-4">
                                         <svg xmlns="http://www.w3.org/2000/svg" style="overflow: visible;">
                                             <g>
-                                                <rect x="115" y="0" width="60%" height="12rem" fill="white"
+                                                <rect x="115" y="0" width="60%" height="16rem" fill="white"
                                                     stroke="black">
                                                 </rect>
                                                 <text x="165" y="100" font-family="Verdana" font-size="35"
@@ -52,7 +52,7 @@
                                         style="text-align: center;font-size: 25px;direction: rtl;margin-bottom: 45px;">
                                         موعد تقديم الأوراق بالمدرسة
                                         <br>
-                                        يوم : {{dateName}} الساعة : {{timeName}}
+                                        {{dayName}} {{dateName}} الساعة {{timeName}}
                                     </div>
                                     <div class="col-md-3">
                                     </div>
@@ -77,13 +77,16 @@
                                     </div>
                                     <div class="row">
 
-                                        <div class="col-md-3 DataInfo" style="direction: rtl;letter-spacing: 3px;">
-                                            {{year}} سنة/
-                                            {{month}} شهر /
-                                            {{day}} يوم
+                                        <div class="col-md-4 DataInfo" style="direction: rtl;letter-spacing: 3px;">
+                                            <p>{{year}} سنة &nbsp;&nbsp;&nbsp;&nbsp;
+                                                {{month}} شهر &nbsp;&nbsp;&nbsp;&nbsp;
+                                                {{day}} يوم
+                                            </p>
+
+
                                         </div>
-                                        <div class="col-md-2 Datalabel">
-                                            العمر
+                                        <div class="col-md-1 Datalabel">
+                                            العمر :
                                         </div>
                                         <div class="col-md-4 DataInfo">
                                             {{form.studentBirthDate.toDate()|date :'dd/MM/yyyy'}}

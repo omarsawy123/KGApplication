@@ -154,10 +154,10 @@ namespace Test.Authorization.Accounts
 
         }
 
-        public EmailConfirmationResult ConfirmEmail(string token,int userId)
+        public async Task<EmailConfirmationResult> ConfirmEmail(string token,int userId)
         {
 
-            var user = _userManager.GetUserById(userId);
+            var user = await _userManager.GetUserByIdAsync(userId);
 
             if (user.EmailConfirmationCode == token)
             {

@@ -85,6 +85,7 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     birthDateValid: boolean = true;
     birthDateMinMaxInfo: string;
     saving: boolean;
+    hideDate: boolean = false;
     // enabledDates = [
     //     new Date('2021-10-20'),
     //     new Date('2021-10-22'),
@@ -168,6 +169,7 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
                 this._services.getForm(result).subscribe((frm) => {
 
                     this.ViewApp = true;
+                    this.hideDate = true;
 
                     this.formView = frm.form
                     this.dateName = frm.dateName

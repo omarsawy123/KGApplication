@@ -44,6 +44,10 @@ export class LoginComponent extends AppComponentBase {
 
   login(): void {
 
+    console.log(this.authService.authenticateModel.userNameOrEmailAddress)
+    console.log(this.authService.authenticateModel.password)
+
+
     this._service.checkUserEmailConfirmation(this.authService.authenticateModel.userNameOrEmailAddress).subscribe((result) => {
       if (result) {
         this.submitting = true;
@@ -53,6 +57,8 @@ export class LoginComponent extends AppComponentBase {
         abp.notify.error("Please Make sure to Register and Confirm Email First");
       }
     })
+
+    // this.authService.authenticate(() => (this.submitting = false));
 
     // this.authService.authenticateModel.userNameOrEmailAddress
 

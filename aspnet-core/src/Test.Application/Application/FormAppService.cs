@@ -359,6 +359,9 @@ namespace Test.Forms
                 result.Months = ((int)r.TotalDays % 365) / 30;
                 result.Days = ((int)r.TotalDays % 365) % 30;
 
+
+                result.DayName = app.DateFk.DateValue.DayOfWeek.ToString();
+                
                 result.DateName = app.DateFk.DateName;
                 result.TimeName = app.TimeFk.TimeName;
 
