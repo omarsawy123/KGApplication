@@ -4,6 +4,8 @@ import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from '@shared/app-component-base';
 import {
   AccountServiceProxy,
+  ApplicationStartEndDateDto,
+  FormServiceProxy,
   RegisterInput,
   RegisterOutput
 } from '@shared/service-proxies/service-proxies';
@@ -20,7 +22,19 @@ export class RegisterComponent extends AppComponentBase {
   saving = false;
   policyCheck = false;
 
+  daysArabic = {
+    Sunday: 'الأحد',
+    Monday: 'الإثنين',
+    Tuesday: 'الثلاثاء',
+    Wednesday: 'الأربعاء',
+    Thursday: 'الخميس',
+    Friday: 'الجمعة',
+    Saturday: 'السبت',
+
+  }
+
   public bsModalRef: BsModalRef
+  dateInfo: ApplicationStartEndDateDto;
 
 
   constructor(
@@ -31,13 +45,21 @@ export class RegisterComponent extends AppComponentBase {
     private modalService: BsModalService,
   ) {
     super(injector);
-  }
 
-  showPolicyModal(template: TemplateRef<any>) {
 
-    this.bsModalRef = this.modalService.show(template, { class: 'modal-lg', ignoreBackdropClick: true });
 
   }
+
+
+  ngOnInit(): void {
+    this._accountService.getApplicationStartEndDate().subscribe((result) => {
+
+      this.dateInfo = result
+
+    })
+
+  }
+
 
   save(): void {
 

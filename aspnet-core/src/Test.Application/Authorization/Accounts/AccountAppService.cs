@@ -11,6 +11,7 @@ using System.Web;
 using Abp.Domain.Repositories;
 using System.Linq;
 using Test.Settings;
+using Test.Dto.ApplicationStartEndDatesDto;
 
 namespace Test.Authorization.Accounts
 {
@@ -51,6 +52,24 @@ namespace Test.Authorization.Accounts
             }
 
             return new IsTenantAvailableOutput(TenantAvailabilityState.Available, tenant.Id);
+        }
+
+        public ApplicationStartEndDateDto GetApplicationStartEndDate()
+        {
+            var set = _settings.FirstOrDefault(s => s.IsDefault);
+
+            var dateInfo = new ApplicationStartEndDateDto()
+            {
+                StartDateName = set.ApplicationStartDate.ToShortDateString(),
+                StartDateDayName = set.ApplicationStartDate.DayOfWeek.ToString(),
+                EndDateName = set.ApplicationEndDate.ToShortDateString(),
+                EndDateDayName = set.ApplicationEndDate.DayOfWeek.ToString(),
+            };
+
+
+
+            return dateInfo;
+
         }
 
         public void SendEmailConfirmation(string token,int userId,string mail)

@@ -84,6 +84,57 @@ export class AccountServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getApplicationStartEndDate(): Observable<ApplicationStartEndDateDto> {
+        let url_ = this.baseUrl + "/api/services/app/Account/GetApplicationStartEndDate";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetApplicationStartEndDate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetApplicationStartEndDate(<any>response_);
+                } catch (e) {
+                    return <Observable<ApplicationStartEndDateDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ApplicationStartEndDateDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetApplicationStartEndDate(response: HttpResponseBase): Observable<ApplicationStartEndDateDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationStartEndDateDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ApplicationStartEndDateDto>(<any>null);
+    }
+
+    /**
      * @param token (optional) 
      * @param userId (optional) 
      * @param mail (optional) 
@@ -2971,6 +3022,61 @@ export class IsTenantAvailableOutput implements IIsTenantAvailableOutput {
 export interface IIsTenantAvailableOutput {
     state: TenantAvailabilityState;
     tenantId: number | undefined;
+}
+
+export class ApplicationStartEndDateDto implements IApplicationStartEndDateDto {
+    startDateName: string | undefined;
+    endDateName: string | undefined;
+    startDateDayName: string | undefined;
+    endDateDayName: string | undefined;
+
+    constructor(data?: IApplicationStartEndDateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.startDateName = _data["startDateName"];
+            this.endDateName = _data["endDateName"];
+            this.startDateDayName = _data["startDateDayName"];
+            this.endDateDayName = _data["endDateDayName"];
+        }
+    }
+
+    static fromJS(data: any): ApplicationStartEndDateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationStartEndDateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["startDateName"] = this.startDateName;
+        data["endDateName"] = this.endDateName;
+        data["startDateDayName"] = this.startDateDayName;
+        data["endDateDayName"] = this.endDateDayName;
+        return data; 
+    }
+
+    clone(): ApplicationStartEndDateDto {
+        const json = this.toJSON();
+        let result = new ApplicationStartEndDateDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IApplicationStartEndDateDto {
+    startDateName: string | undefined;
+    endDateName: string | undefined;
+    startDateDayName: string | undefined;
+    endDateDayName: string | undefined;
 }
 
 export class UserToken implements IUserToken {

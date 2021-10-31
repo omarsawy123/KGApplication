@@ -26,6 +26,8 @@ namespace Test.Settings
         [Required]
         public DateTime StudentBirthDateMax { get; set; }
         [Required]
+        public DateTime CalculateDateOn { get; set; }
+        [Required]
         public bool IsDefault { get; set; }
         [Required]
         public int TenantId { get; set; }

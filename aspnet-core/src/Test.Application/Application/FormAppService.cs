@@ -25,6 +25,7 @@ using Abp.Linq.Extensions;
 using Abp.Extensions;
 using Test.Dto.DatesDropDown;
 using Test.Dto.TimesDropDownDto;
+using Test.Dto.ApplicationStartEndDatesDto;
 
 namespace Test.Forms
 {
@@ -299,6 +300,8 @@ namespace Test.Forms
 
         }
 
+       
+
         public string GetStudentBirthDateMinMax()
         {
             var date = _settingsRepository.FirstOrDefault(s => s.IsDefault);
@@ -341,11 +344,13 @@ namespace Test.Forms
             {
                 var form = await _formRepository.GetAsync((int)input.Id);
 
+                var set = await _settingsRepository.FirstOrDefaultAsync(s => s.IsDefault);
+
                 var app = await _appRepository.GetAll().Where(a => a.FormFk.Id == input.Id)
                     .Include(a => a.TimeFk).Include(a => a.DateFk).FirstOrDefaultAsync();
 
 
-                var r = DateTime.Now - form.StudentBirthDate;
+                var r = set.CalculateDateOn - form.StudentBirthDate;
                 
 
                 
