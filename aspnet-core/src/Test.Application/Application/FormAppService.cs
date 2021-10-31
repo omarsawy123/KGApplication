@@ -344,11 +344,20 @@ namespace Test.Forms
                 var app = await _appRepository.GetAll().Where(a => a.FormFk.Id == input.Id)
                     .Include(a => a.TimeFk).Include(a => a.DateFk).FirstOrDefaultAsync();
 
+
+                var r = DateTime.Now - form.StudentBirthDate;
+                
+
+                
                 ViewFormDto result = new ViewFormDto();
                 
                 result.Form = ObjectMapper.Map<FormDto>(form);
                 result.Form.DateId = app.DateFk.Id;
                 result.Form.TimeId = app.TimeFk.Id;
+
+                result.Years = (int)r.TotalDays / 365;
+                result.Months = ((int)r.TotalDays % 365) / 30;
+                result.Days = ((int)r.TotalDays % 365) % 30;
 
                 result.DateName = app.DateFk.DateName;
                 result.TimeName = app.TimeFk.TimeName;

@@ -77,7 +77,15 @@
                                     </div>
                                     <div class="row">
 
-                                        <div class="col-md-9 DataInfo">
+                                        <div class="col-md-3 DataInfo" style="direction: rtl;letter-spacing: 3px;">
+                                            {{year}} سنة/
+                                            {{month}} شهر /
+                                            {{day}} يوم
+                                        </div>
+                                        <div class="col-md-2 Datalabel">
+                                            العمر
+                                        </div>
+                                        <div class="col-md-4 DataInfo">
                                             {{form.studentBirthDate.toDate()|date :'dd/MM/yyyy'}}
                                         </div>
                                         <div class="col-md-3 Datalabel">
@@ -113,14 +121,26 @@
                                     </div>
                                     <div class="row">
 
-                                        <div class="col-md-9 DataInfo">
+                                        <div class="col-md-2 DataInfo">
                                             {{form.telephone}}
                                         </div>
-                                        <div class="col-md-3 Datalabel">
+                                        <div class="col-md-2 Datalabel">
                                             رقم التليفون :
                                         </div>
+                                        <div class="col-md-2 DataInfo">
+                                            {{form.fatherMobile}}
+                                        </div>
+                                        <div class="col-md-2 Datalabel">
+                                            موبايل الأب :
+                                        </div>
+                                        <div class="col-md-2 DataInfo">
+                                            {{form.motherMobile}}
+                                        </div>
+                                        <div class="col-md-2 Datalabel">
+                                            موبايل الأم :
+                                        </div>
                                     </div>
-                                    <div class="row">
+                                    <!-- <div class="row">
 
                                         <div class="col-md-9 DataInfo">
                                             {{form.fatherMobile}}
@@ -137,7 +157,7 @@
                                         <div class="col-md-3 Datalabel">
                                             موبايل الأم :
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="row">
 
                                         <div class="col-md-9 DataInfo">

@@ -13,5 +13,10 @@ namespace Test.Dto.ViewForm
         public string DateName { get; set; }
         public string TimeName { get; set; }
 
+        public int Days { get; set; }
+        public int Months { get; set; }
+        public int Years { get; set; }
+
+
     }
 }

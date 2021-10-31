@@ -4287,6 +4287,9 @@ export class ViewFormDto implements IViewFormDto {
     form: FormDto;
     dateName: string | undefined;
     timeName: string | undefined;
+    days: number;
+    months: number;
+    years: number;
 
     constructor(data?: IViewFormDto) {
         if (data) {
@@ -4302,6 +4305,9 @@ export class ViewFormDto implements IViewFormDto {
             this.form = _data["form"] ? FormDto.fromJS(_data["form"]) : <any>undefined;
             this.dateName = _data["dateName"];
             this.timeName = _data["timeName"];
+            this.days = _data["days"];
+            this.months = _data["months"];
+            this.years = _data["years"];
         }
     }
 
@@ -4317,6 +4323,9 @@ export class ViewFormDto implements IViewFormDto {
         data["form"] = this.form ? this.form.toJSON() : <any>undefined;
         data["dateName"] = this.dateName;
         data["timeName"] = this.timeName;
+        data["days"] = this.days;
+        data["months"] = this.months;
+        data["years"] = this.years;
         return data; 
     }
 
@@ -4332,6 +4341,9 @@ export interface IViewFormDto {
     form: FormDto;
     dateName: string | undefined;
     timeName: string | undefined;
+    days: number;
+    months: number;
+    years: number;
 }
 
 export class FormDtoPagedResultDto implements IFormDtoPagedResultDto {

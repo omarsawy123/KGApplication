@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { FormDto, FormServiceProxy } from '@shared/service-proxies/service-proxies';
 import * as htmlToImage from 'html-to-image';
@@ -27,8 +27,10 @@ export class ViewApplicationComponent implements OnInit {
     timeName: string = "";
     loading: boolean = false;
     printType: number = 0;
+    year: number;
+    month: number;
+    day: number;
 
-    // @ViewChild('print') print:
     @ViewChild('pdfArabicData') pdfArabicData: ElementRef;
     @ViewChild('pdfHeader') pdfHeader: ElementRef;
     noApplication: boolean = true;
@@ -51,6 +53,10 @@ export class ViewApplicationComponent implements OnInit {
                     this.form = frm.form;
                     this.dateName = frm.dateName;
                     this.timeName = frm.timeName;
+                    this.year = frm.years;
+                    this.month = frm.months;
+                    this.day = frm.days;
+
                     this.cdRef.detectChanges();
                 })
             }
