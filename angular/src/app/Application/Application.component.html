@@ -37,22 +37,29 @@
                                     <div *ngIf="!chooseDate">
                                         <div class="form-group row required">
                                             <div class="col-md-4">
-                                                <label for="name" class="requiredInput">Student Name</label>
+                                                <label for="name" class="requiredInput">
+                                                    اسم الطفل بالكامل
+                                                    (باللغة اللاتينية)
+
+                                                </label>
                                                 <input type="text" formControlName="studentName" class="form-control"
                                                     name="name" id="name" maxlength="30">
                                             </div>
                                             <div class="col-md-4">
-                                                <label for="name" (keypress)="arabicOnly($event)"
-                                                    class="requiredInput">Student
-                                                    Name Arabic</label>
+                                                <label for="name" (keypress)="arabicOnly($event)" class="requiredInput">
+                                                    اسم الطفل بالكامل
+                                                    (باللغة العربية)
+
+                                                </label>
                                                 <input type="text" formControlName="studentNameAr" class="form-control"
                                                     name="name" id="name" maxlength="30">
                                             </div>
                                         </div>
                                         <div class="form-group row required">
                                             <div class="col-md-4">
-                                                <label for="studentNationalId" class="requiredInput">Student
-                                                    NationalId</label>
+                                                <label for="studentNationalId" class="requiredInput">
+                                                    الرقم القومي للطفل
+                                                </label>
                                                 <input type="text" (keypress)="checkPattern($event,false,true)"
                                                     (change)="getAgeAndBirthDate()" maxlength="14"
                                                     [ngClass]="{ 'is-invalid': f.studentNationalId.touched  && f.studentNationalId.errors, 'is-valid': f.studentNationalId.touched && !f.studentNationalId.errors }"
@@ -66,7 +73,10 @@
                                             </div>
 
                                             <div class="col-md-4">
-                                                <label for="studentBirthDate" class="requiredInput">Birth Date</label>
+                                                <label for="studentBirthDate" class="requiredInput">
+                                                    تاريخ
+                                                    الميلاد
+                                                </label>
                                                 <input type="text" bsDatepicker [bsConfig]="datePickerConfig"
                                                     [isDisabled]="true" formControlName="studentBirthDate"
                                                     class="form-control" id="studentBirthDate" readonly>
@@ -76,7 +86,7 @@
                                         </div>
                                         <div class="form-group row required">
                                             <div class="col-md-4">
-                                                <label for="fatherJob" class="requiredInput">Father Job</label>
+                                                <label for="fatherJob" class="requiredInput">مهنة الأب</label>
                                                 <input type="text" formControlName="fatherJob" class="form-control"
                                                     id="fatherJob" maxlength="20">
                                             </div>
@@ -85,7 +95,7 @@
                                         <div class="form-group row required">
 
                                             <div class="col-md-4">
-                                                <label for="motherJob" class="requiredInput">Mother Job</label>
+                                                <label for="motherJob" class="requiredInput">مهنة الأم</label>
                                                 <input type="text" formControlName="motherJob" class="form-control"
                                                     id="motherJob" maxlength="20" />
 
@@ -93,7 +103,7 @@
                                         </div>
                                         <div class="form-group row required">
                                             <div class="col-md-4">
-                                                <label for="fatherMobile" class="requiredInput">Father Mobile</label>
+                                                <label for="fatherMobile" class="requiredInput">موبايل الأب</label>
                                                 <input type="text" (keypress)="checkPattern($event,false,true)"
                                                     formControlName="fatherMobile" class="form-control"
                                                     id="fatherMobile" maxlength="12">
@@ -101,7 +111,7 @@
                                             </div>
 
                                             <div class="col-md-4">
-                                                <label for="motherMobile" class="requiredInput">Mother Mobile</label>
+                                                <label for="motherMobile" class="requiredInput">موبايل الأم</label>
                                                 <input type="text" (keypress)="checkPattern($event,false,true)"
                                                     formControlName="motherMobile" class="form-control"
                                                     id="motherMobile" maxlength="12" />
@@ -110,14 +120,14 @@
                                         </div>
                                         <div class="form-group row required">
                                             <div class="col-md-4">
-                                                <label for="telephone" class="requiredInput">Telephone</label>
+                                                <label for="telephone" class="requiredInput">رقم تليفون المنزل</label>
                                                 <input type="text" (keypress)="checkPattern($event,false,true)"
                                                     formControlName="telephone" class="form-control" id="telephone"
                                                     maxlength="12">
                                             </div>
 
                                             <div class="col-md-4">
-                                                <label for="email" class="requiredInput">Email</label>
+                                                <label for="email" class="requiredInput">البريد الإلكتروني</label>
                                                 <input type="email"
                                                     [ngClass]="{ 'is-invalid': f.email.touched  && f.email.errors, 'is-valid': f.email.touched && !f.email.errors }"
                                                     formControlName="email" class="form-control" id="email"
@@ -131,7 +141,7 @@
                                         <div class="form-group row required">
 
                                             <div class="col-md-4">
-                                                <label for="studentReligion" class="requiredInput">Religion</label>
+                                                <label for="studentReligion" class="requiredInput">الديانة</label>
                                                 <select type="text" formControlName="studentReligion"
                                                     class="form-control" id="studentReligion">
 
@@ -146,7 +156,7 @@
                                         </div>
                                         <div class="form-group row required">
                                             <div class="col-md-4">
-                                                <label for="hasRelative">Student Has Relatives</label>
+                                                <label for="hasRelative">هل لديه أخوات او اقارب بالمدرسة؟</label>
                                                 <input type="checkbox" (change)="checkValidation()" style="margin:30px"
                                                     formControlName="hasRelative" class="form-check-inline"
                                                     id="hasRelative">
@@ -156,8 +166,8 @@
                                         </div>
                                         <div class="form-group row required" *ngIf="f.hasRelative.value">
                                             <div class="col-md-6">
-                                                <label for="studentRelativeName" class="requiredInput">Student Names and
-                                                    Grades</label>
+                                                <label for="studentRelativeName" class="requiredInput">أسمائهم و العام
+                                                    الدراسى</label>
                                                 <textarea type="text" formControlName="studentRelativeName"
                                                     class="form-control" id="studentRelativeName" maxlength="40">
                                             </textarea>
@@ -165,7 +175,7 @@
                                         </div>
                                         <div class="form-group row required">
                                             <div class="col-md-4">
-                                                <label for="motherSchoolGraduate">Mother Graduate From School</label>
+                                                <label for="motherSchoolGraduate">هل الأم من خريجات المدرسة ؟</label>
                                                 <input type="checkbox" (change)="checkValidation()" style="margin:30px"
                                                     formControlName="motherSchoolGraduate" class="form-check-inline"
                                                     id="motherSchoolGraduate">
@@ -175,8 +185,7 @@
                                         </div>
                                         <div class="form-group row required" *ngIf="f.motherSchoolGraduate.value">
                                             <div class="col-md-4">
-                                                <label for="motherGradYear" class="requiredInput">Graduation
-                                                    Year</label>
+                                                <label for="motherGradYear" class="requiredInput">سنة التخرج</label>
                                                 <input type="text" (keypress)="checkPattern($event,false,true)"
                                                     formControlName="motherGradYear" class="form-control"
                                                     id="motherGradYear" maxlength="4">
@@ -185,7 +194,8 @@
                                         </div>
                                         <div class="form-group row required">
                                             <div class="col-md-4">
-                                                <label for="joiningSchool" class="requiredInput">Joining School</label>
+                                                <label for="joiningSchool" class="requiredInput">اسم المدرسة/الحضانة
+                                                    الذى يلتحق بها الطفل</label>
                                                 <input type="text" formControlName="joiningSchool" class="form-control"
                                                     id="joiningSchool" maxlength="30">
 
