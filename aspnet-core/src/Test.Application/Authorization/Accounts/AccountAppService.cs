@@ -113,6 +113,7 @@ namespace Test.Authorization.Accounts
             //-----------------------------last row have app url---------------//	
             EmailBody = EmailBody + "<td width='24'>&nbsp;</td></tr><tr><td style='padding-top:18px;padding-bottom:32px;border-bottom:1px solid #e1e1e1;' width='24'>&nbsp;</td>";
             EmailBody = EmailBody + "<td colspan='2' style='color:#858585;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:20px;padding-top:18px;padding-bottom:32px;border-bottom:1px solid #e1e1e1;'>We're glad you're here,<br>";
+            EmailBody = EmailBody + "<td colspan='2' style='color:#858585;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:20px;font-weight:bold;padding-top:18px;padding-bottom:32px;border-bottom:1px solid #e1e1e1;'>For Any Issues please contact Support : +20 122 464 7966,<br>";
             EmailBody = EmailBody + "Deutsche Schule der Borromäerinnen Alexandria</td><td style='padding-top:18px;padding-bottom:32px;border-bottom:1px solid #e1e1e1;' width='24'>&nbsp;</td></tr></tbody></table>";
 
             #endregion
