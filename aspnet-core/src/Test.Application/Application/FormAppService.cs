@@ -26,6 +26,8 @@ using Abp.Extensions;
 using Test.Dto.DatesDropDown;
 using Test.Dto.TimesDropDownDto;
 using Test.Dto.ApplicationStartEndDatesDto;
+using Test.Users.Dto;
+using Abp.Localization;
 
 namespace Test.Forms
 {
@@ -375,6 +377,16 @@ namespace Test.Forms
             }
         }
 
-        
+        // copied from UserAppSerivce to solve permission issue
+        public async Task ChangeLanguage(ChangeUserLanguageDto input)
+        {
+            await SettingManager.ChangeSettingForUserAsync(
+                AbpSession.ToUserIdentifier(),
+                LocalizationSettingNames.DefaultLanguage,
+                input.LanguageName
+            );
+        }
+
+
     }
 }

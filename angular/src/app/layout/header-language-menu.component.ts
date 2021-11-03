@@ -7,7 +7,8 @@ import {
 import { AppComponentBase } from '@shared/app-component-base';
 import {
   UserServiceProxy,
-  ChangeUserLanguageDto
+  ChangeUserLanguageDto,
+  FormServiceProxy
 } from '@shared/service-proxies/service-proxies';
 import { filter as _filter } from 'lodash-es';
 
@@ -21,23 +22,30 @@ export class HeaderLanguageMenuComponent extends AppComponentBase
   languages: abp.localization.ILanguageInfo[];
   currentLanguage: abp.localization.ILanguageInfo;
 
-  constructor(injector: Injector, private _userService: UserServiceProxy) {
+  constructor(injector: Injector, private _userService: UserServiceProxy, private formService: FormServiceProxy) {
     super(injector);
   }
 
   ngOnInit() {
+
+    debugger
     this.languages = _filter(
       this.localization.languages,
       (l) => !l.isDisabled
     );
+
+    this.languages = this.languages.filter(l => l.displayName == "German" || l.displayName == "العربية")
+    
     this.currentLanguage = this.localization.currentLanguage;
+
+
   }
 
   changeLanguage(languageName: string): void {
     const input = new ChangeUserLanguageDto();
     input.languageName = languageName;
 
-    this._userService.changeLanguage(input).subscribe(() => {
+    this.formService.changeLanguage(input).subscribe(() => {
       abp.utils.setCookieValue(
         'Abp.Localization.CultureName',
         languageName,

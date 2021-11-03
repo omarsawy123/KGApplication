@@ -114,7 +114,65 @@
     <text name="TotalRecordsCount">Total: {0}</text>
     <text name="Search">Search</text>
     <text name="Clear">Clear</text>
-    <text name="studentName">إسم الطالب</text>
+
+
+    <text name="applicationEnded">عذرا ، تم إنتهاء موعد التقديم</text>
+    <text name="studentName">
+      اسم الطفل بالكامل
+      (باللغة اللاتينية)
+    </text>
+    <text name="studentNameAr">
+      اسم الطفل بالكامل
+      (باللغة العربية)
+    </text>
+    <text name="studentNationalId">الرقم القومي للطفل</text>
+    <text name="studentBirthDate"> تاريخ الميلاد</text>
+    <text name="fatherJob"> مهنة الأب</text>
+    <text name="motherJob"> مهنة الأم</text>
+    <text name="fatherMobile">موبايل الأب</text>
+    <text name="motherMobile">موبايل الأم</text>
+    <text name="homeTelephone">
+      رقم تليفون المنزل
+    </text>
+    <text name="studentMail">
+      البريد الإلكتروني
+    </text>
+    <text name="studentReligion">
+      الديانة
+    </text>
+    <text name="studentRelatives">
+      هل لديه أخوات او اقارب بالمدرسة؟
+    </text>
+    <text name="studentRelativesInfo">
+      أسمائهم و العام الدراسى
+    </text>
+    <text name="motherGraduate">
+      هل الأم من خريجات المدرسة ؟
+    </text>
+    <text name="motherGraduationYear">
+      سنة التخرج
+    </text>
+    <text name="joiningSchool">
+      اسم المدرسة/الحضانة الذى يلتحق بها الطفل
+    </text>
+      <text name="next">
+      التالي
+    </text>
+     <text name="back">
+      رجوع
+    </text>
+    <text name="editProfile">
+      تعديل الملف
+    </text>
+    <text name="editDate">
+      تعديل الموعد 
+    </text>
+    <text name="save">
+      حفظ
+    </text>
+     <text name="print">
+      طباعة
+    </text>
 
     <text name="ResetPasswordStepOneInfo">1. Enter your administrator password</text>
     <text name="ResetPasswordStepTwoInfo">2. Copy this random password so you can send it to the user</text>

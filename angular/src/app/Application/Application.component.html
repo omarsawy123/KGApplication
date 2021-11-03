@@ -24,7 +24,7 @@
 
                                     </div>
                                     <div class="col-md-6">
-                                        <h3>عذرا ، تم إنتهاء موعد التقديم</h3>
+                                        <h3>{{l('applicationEnded')}}</h3>
                                     </div>
                                     <div class="col-md-3">
 
@@ -38,18 +38,14 @@
                                         <div class="form-group row required">
                                             <div class="col-md-4">
                                                 <label for="name" class="requiredInput">
-                                                    اسم الطفل بالكامل
-                                                    (باللغة اللاتينية)
-
+                                                    {{l('studentName')}}
                                                 </label>
                                                 <input type="text" formControlName="studentName" class="form-control"
                                                     name="name" id="name" maxlength="30">
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="name" (keypress)="arabicOnly($event)" class="requiredInput">
-                                                    اسم الطفل بالكامل
-                                                    (باللغة العربية)
-
+                                                    {{l('studentNameAr')}}
                                                 </label>
                                                 <input type="text" formControlName="studentNameAr" class="form-control"
                                                     name="name" id="name" maxlength="30">
@@ -58,7 +54,7 @@
                                         <div class="form-group row required">
                                             <div class="col-md-4">
                                                 <label for="studentNationalId" class="requiredInput">
-                                                    الرقم القومي للطفل
+                                                    {{l('studentNationalId')}}
                                                 </label>
                                                 <input type="text" (keypress)="checkPattern($event,false,true)"
                                                     (change)="getAgeAndBirthDate()" maxlength="14"
@@ -74,8 +70,7 @@
 
                                             <div class="col-md-4">
                                                 <label for="studentBirthDate" class="requiredInput">
-                                                    تاريخ
-                                                    الميلاد
+                                                    {{l('studentBirthDate')}}
                                                 </label>
                                                 <input type="text" bsDatepicker [bsConfig]="datePickerConfig"
                                                     [isDisabled]="true" formControlName="studentBirthDate"
@@ -86,7 +81,7 @@
                                         </div>
                                         <div class="form-group row required">
                                             <div class="col-md-4">
-                                                <label for="fatherJob" class="requiredInput">مهنة الأب</label>
+                                                <label for="fatherJob" class="requiredInput">{{l('fatherJob')}}</label>
                                                 <input type="text" formControlName="fatherJob" class="form-control"
                                                     id="fatherJob" maxlength="20">
                                             </div>
@@ -95,7 +90,7 @@
                                         <div class="form-group row required">
 
                                             <div class="col-md-4">
-                                                <label for="motherJob" class="requiredInput">مهنة الأم</label>
+                                                <label for="motherJob" class="requiredInput">{{l('motherJob')}}</label>
                                                 <input type="text" formControlName="motherJob" class="form-control"
                                                     id="motherJob" maxlength="20" />
 
@@ -103,7 +98,8 @@
                                         </div>
                                         <div class="form-group row required">
                                             <div class="col-md-4">
-                                                <label for="fatherMobile" class="requiredInput">موبايل الأب</label>
+                                                <label for="fatherMobile"
+                                                    class="requiredInput">{{l('fatherMobile')}}</label>
                                                 <input type="text" (keypress)="checkPattern($event,false,true)"
                                                     formControlName="fatherMobile" class="form-control"
                                                     id="fatherMobile" maxlength="12">
@@ -111,7 +107,9 @@
                                             </div>
 
                                             <div class="col-md-4">
-                                                <label for="motherMobile" class="requiredInput">موبايل الأم</label>
+                                                <label for="motherMobile" class="requiredInput">
+                                                    {{l('motherMobile')}}
+                                                </label>
                                                 <input type="text" (keypress)="checkPattern($event,false,true)"
                                                     formControlName="motherMobile" class="form-control"
                                                     id="motherMobile" maxlength="12" />
@@ -120,14 +118,16 @@
                                         </div>
                                         <div class="form-group row required">
                                             <div class="col-md-4">
-                                                <label for="telephone" class="requiredInput">رقم تليفون المنزل</label>
+                                                <label for="telephone" class="requiredInput">
+                                                    {{l('homeTelephone')}}
+                                                </label>
                                                 <input type="text" (keypress)="checkPattern($event,false,true)"
                                                     formControlName="telephone" class="form-control" id="telephone"
                                                     maxlength="12">
                                             </div>
 
                                             <div class="col-md-4">
-                                                <label for="email" class="requiredInput">البريد الإلكتروني</label>
+                                                <label for="email" class="requiredInput">{{l('studentMail')}}</label>
                                                 <input type="email"
                                                     [ngClass]="{ 'is-invalid': f.email.touched  && f.email.errors, 'is-valid': f.email.touched && !f.email.errors }"
                                                     formControlName="email" class="form-control" id="email"
@@ -141,7 +141,8 @@
                                         <div class="form-group row required">
 
                                             <div class="col-md-4">
-                                                <label for="studentReligion" class="requiredInput">الديانة</label>
+                                                <label for="studentReligion"
+                                                    class="requiredInput">{{l('studentReligion')}}</label>
                                                 <select type="text" formControlName="studentReligion"
                                                     class="form-control" id="studentReligion">
 
@@ -156,7 +157,7 @@
                                         </div>
                                         <div class="form-group row required">
                                             <div class="col-md-4">
-                                                <label for="hasRelative">هل لديه أخوات او اقارب بالمدرسة؟</label>
+                                                <label for="hasRelative">{{l('studentRelatives')}}</label>
                                                 <input type="checkbox" (change)="checkValidation()" style="margin:30px"
                                                     formControlName="hasRelative" class="form-check-inline"
                                                     id="hasRelative">
@@ -166,8 +167,9 @@
                                         </div>
                                         <div class="form-group row required" *ngIf="f.hasRelative.value">
                                             <div class="col-md-6">
-                                                <label for="studentRelativeName" class="requiredInput">أسمائهم و العام
-                                                    الدراسى</label>
+                                                <label for="studentRelativeName" class="requiredInput">
+                                                    {{l('studentRelativesInfo')}}
+                                                </label>
                                                 <textarea type="text" formControlName="studentRelativeName"
                                                     class="form-control" id="studentRelativeName" maxlength="40">
                                             </textarea>
@@ -175,7 +177,7 @@
                                         </div>
                                         <div class="form-group row required">
                                             <div class="col-md-4">
-                                                <label for="motherSchoolGraduate">هل الأم من خريجات المدرسة ؟</label>
+                                                <label for="motherSchoolGraduate">{{l('motherGraduate')}}</label>
                                                 <input type="checkbox" (change)="checkValidation()" style="margin:30px"
                                                     formControlName="motherSchoolGraduate" class="form-check-inline"
                                                     id="motherSchoolGraduate">
@@ -185,7 +187,8 @@
                                         </div>
                                         <div class="form-group row required" *ngIf="f.motherSchoolGraduate.value">
                                             <div class="col-md-4">
-                                                <label for="motherGradYear" class="requiredInput">سنة التخرج</label>
+                                                <label for="motherGradYear"
+                                                    class="requiredInput">{{l('motherGraduationYear')}}</label>
                                                 <input type="text" (keypress)="checkPattern($event,false,true)"
                                                     formControlName="motherGradYear" class="form-control"
                                                     id="motherGradYear" maxlength="4">
@@ -194,8 +197,8 @@
                                         </div>
                                         <div class="form-group row required">
                                             <div class="col-md-4">
-                                                <label for="joiningSchool" class="requiredInput">اسم المدرسة/الحضانة
-                                                    الذى يلتحق بها الطفل</label>
+                                                <label for="joiningSchool"
+                                                    class="requiredInput">{{l('joiningSchool')}}</label>
                                                 <input type="text" formControlName="joiningSchool" class="form-control"
                                                     id="joiningSchool" maxlength="30">
 
@@ -233,27 +236,29 @@
                                         <div class="col-md-12">
                                             <button class="btn btn-primary" type="button"
                                                 *ngIf="!chooseDate&&birthDateValid" (click)="chooseDate=true"
-                                                style="margin-right: 10px;">Next</button>
+                                                style="margin-right: 10px;">{{l('next')}}</button>
 
                                             <button class="btn btn-primary" type="button" style="float: right;"
                                                 *ngIf="!chooseDate&&ViewApp"
-                                                [routerLink]="['../viewapplication']">Print</button>
+                                                [routerLink]="['../viewapplication']">{{l('print')}}</button>
 
                                             <button class="btn btn-primary" type="button" style="margin-right: 10px;"
                                                 *ngIf="chooseDate&&ViewApp" (click)="chooseDate=false">
-                                                Edit Profile
+                                                {{l('editProfile')}}
                                             </button>
                                             <button class="btn btn-primary" type="button" style="margin-right: 10px;"
                                                 *ngIf="chooseDate&&ViewApp" (click)="hideDate=false">
-                                                Edit Date
+                                                {{l('editDate')}}
                                             </button>
 
                                             <button class="btn btn-primary" type="button" style="margin-right: 10px;"
-                                                *ngIf="chooseDate&&!ViewApp" (click)="chooseDate=false">Back</button>
+                                                *ngIf="chooseDate&&!ViewApp" (click)="chooseDate=false">
+                                                {{l('back')}}
+                                            </button>
 
                                             <button *ngIf="chooseDate&&birthDateValid" style="float: right;"
                                                 class="btn btn-success" [disabled]="ApplicationForm.invalid||saving"
-                                                type="submit">Save</button>
+                                                type="submit">{{l('save')}}</button>
 
                                         </div>
                                     </div>
