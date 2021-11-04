@@ -159,8 +159,16 @@ export class ViewApplicationComponent implements OnInit {
                 },
                 {
                     text: 'Sonstige Beobachtungen',
-                    margin: [0, 5, 0, 0]
-                }
+                    margin: [0, 5, 0, 10]
+                },
+                {
+                    canvas: [{ type: 'line', x1: 0, y1: 5, x2: 595 - 2 * 40, y2: 5, lineWidth: 1 }]
+                },
+                {
+                    canvas: [{ type: 'line', x1: 0, y1: 5, x2: 595 - 2 * 40, y2: 5, lineWidth: 1 }],
+                    margin: [0, 15, 0, 0]
+
+                },
                 ],
                 pageMargins: [72, 72, 72, 100]//Left,Top,Right,Bottom
             };
