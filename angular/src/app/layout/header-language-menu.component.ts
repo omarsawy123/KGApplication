@@ -34,7 +34,7 @@ export class HeaderLanguageMenuComponent extends AppComponentBase
       (l) => !l.isDisabled
     );
 
-    this.languages = this.languages.filter(l => l.displayName == "German" || l.displayName == "العربية")
+    this.languages = this.languages.filter(l => l.displayName == "German" || l.displayName == "English")
     
     this.currentLanguage = this.localization.currentLanguage;
 
