@@ -145,10 +145,18 @@
                                                     class="requiredInput">{{l('studentReligion')}}</label>
                                                 <select type="text" formControlName="studentReligion"
                                                     class="form-control" id="studentReligion">
+                                                    <ng-container *ngIf="currentLanguage.displayName=='English'">
+                                                        <option value="مسلم">مسلم</option>
+                                                        <option value="مسيحي">مسيحي</option>
+                                                        <option value="أخري">أخري</option>
 
-                                                    <option value="مسلم">مسلم</option>
-                                                    <option value="مسيحي">مسيحي</option>
-                                                    <option value="أخري">أخري</option>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="currentLanguage.displayName=='German'">
+                                                        <option value="Muslim">Muslim</option>
+                                                        <option value="Christian">Christian</option>
+                                                        <option value="Other">Other</option>
+
+                                                    </ng-container>
 
                                                 </select>
                                             </div>

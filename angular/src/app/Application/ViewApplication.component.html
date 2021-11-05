@@ -57,7 +57,7 @@
                                     <div class="col-md-3">
                                     </div>
                                 </div>
-                                <div>
+                                <div >
                                     <div class="row">
                                         <div class="col-md-9 DataInfo">
                                             {{form.studentNameAr}}
@@ -220,15 +220,156 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- <div *ngIf="currentLanguage.displayName=='German'">
+                                    <div class="row">
+                                        <div class="col-md-4 DatalabelGr ">
+                                            Name des Studenten
+                                            (Auf Arabisch):
+                                        </div>
+                                        <div class="col-md-8  DataInfoGr">
+                                            {{form.studentNameAr}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-4 DatalabelGr">
+                                            Name des Studenten
+                                            (In Latein):
+                                        </div>
+                                        <div class="col-md-8 DataInfoGr">
+                                            {{form.studentName}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 DatalabelGr">
+                                            Geburtsdatum:
+                                        </div>
+                                        <div class="col-md-8 DataInfoGr">
+                                            {{form.studentBirthDate.toDate()|date :'dd/MM/yyyy'}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-4 DatalabelGr">
+                                            Religion:
+                                        </div>
+                                        <div class="col-md-8 DataInfoGr">
+                                            {{form.studentReligion}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-4 DatalabelGr">
+                                            Vater Job:
+                                        </div>
+                                        <div class="col-md-8 DataInfoGr">
+                                            {{form.fatherJob}}
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-4 DatalabelGr">
+                                            Mutter Job:
+                                        </div>
+                                        <div class="col-md-8 DataInfoGr">
+                                            {{form.motherJob}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-2 DatalabelGr">
+                                            Zellzahl:
+                                        </div>
+                                        <div class="col-md-2 DataInfoGr">
+                                            {{form.telephone}}
+                                        </div>
+                                        <div class="col-md-2 DatalabelGr">
+                                            Vater Mobile:
+                                        </div>
+                                        <div class="col-md-2 DataInfoGr">
+                                            {{form.fatherMobile}}
+                                        </div>
+                                        <div class="col-md-2 DatalabelGr">
+                                            Mutter Mobile:
+                                        </div>
+                                        <div class="col-md-2 DataInfoGr">
+                                            {{form.motherMobile}}
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-md-4 DatalabelGr">
+                                            E-Mail Adresse:
+                                        </div>
+                                        <div class="col-md-8 DataInfoGr">
+                                            {{form.email}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 DatalabelGr">
+                                            Hat er Schwestern oder Verwandte in der Schule?:
+                                        </div>
+                                        <div class="col-md-8 DataInfoGr" *ngIf="form.hasRelatives">
+                                            Ja
+                                        </div>
+                                        <div class="col-md-8 DataInfoGr" *ngIf="!form.hasRelatives">
+                                            Nien
+                                        </div>
+
+                                    </div>
+                                    <div class="row" *ngIf="form.hasRelatives">
+                                        <div class="col-md-4 DatalabelGr">
+                                            Ihre Namen und das akademische Jahr:
+                                        </div>
+                                        <div class="col-md-8 DataInfoGr">
+                                            {{form.studentRelativeName}}
+                                        </div>
+
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 DatalabelGr">
+                                            Ist die Mutter Schulabsolventin ? :
+                                        </div>
+                                        <div class="col-md-8 DataInfoGr" *ngIf="form.motherSchoolGraduate">
+                                            Ja
+                                        </div>
+                                        <div class="col-md-8 DataInfoGr" *ngIf="!form.motherSchoolGraduate">
+                                            Nien
+                                        </div>
+
+                                    </div>
+                                    <div class="row" *ngIf="form.motherSchoolGraduate">
+                                        <div class="col-md-4 DatalabelGr">
+                                            Abschlussjahr:
+                                        </div>
+                                        <div class="col-md-8 DataInfoGr">
+                                            {{form.motherGraduationYear}}
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-4 DatalabelGr">
+                                            Der Name der Schule / des Kindergartens, die das Kind besucht:
+                                        </div>
+                                        <div class="col-md-8 DataInfoGr">
+                                            {{form.joiningSchool}}
+                                        </div>
+                                    </div>
+                                </div> -->
                             </div>
                             <div class="row" *ngIf="!noApplication&&form!=null">
-                                <div class="col-md-3">
+                                <div class="col-md-3" style="margin-top: 10px;">
                                     <button class="btn btn-primary" *ngIf="printType==0"
-                                        (click)="printStudentPdf()">Print</button>
+                                        (click)="printStudentPdf()">{{l('print')}}</button>
                                     <button class="btn btn-primary" *ngIf="printType==1"
-                                        (click)="printPdf()">Print</button>
+                                        (click)="printPdf()">{{l('print')}}</button>
                                     <button class="btn btn-primary" *ngIf="printType==2"
-                                        (click)="printAllPdf()">Print</button>
+                                        (click)="printAllPdf()">{{l('print')}}</button>
                                 </div>
                             </div>
                         </div>

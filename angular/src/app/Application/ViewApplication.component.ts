@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
+import { AppComponentBase } from '@shared/app-component-base';
 import { FormDto, FormServiceProxy } from '@shared/service-proxies/service-proxies';
 import * as htmlToImage from 'html-to-image';
 //PDF imports
@@ -19,7 +20,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 })
 
-export class ViewApplicationComponent implements OnInit {
+export class ViewApplicationComponent extends AppComponentBase implements OnInit {
 
     formId: number;
     form: FormDto;
@@ -30,6 +31,9 @@ export class ViewApplicationComponent implements OnInit {
     year: number;
     month: number;
     day: number;
+
+    currentLanguage: abp.localization.ILanguageInfo;
+
 
     @ViewChild('pdfArabicData') pdfArabicData: ElementRef;
     @ViewChild('pdfHeader') pdfHeader: ElementRef;
@@ -48,9 +52,11 @@ export class ViewApplicationComponent implements OnInit {
     }
 
 
-    constructor(private router: Router, private _services: FormServiceProxy, private cdRef: ChangeDetectorRef) {
+    constructor(injector: Injector, private router: Router, private _services: FormServiceProxy, private cdRef: ChangeDetectorRef) {
 
+        super(injector);
 
+        this.currentLanguage = this.localization.currentLanguage;
     }
 
     ngOnInit() {

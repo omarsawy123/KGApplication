@@ -29,24 +29,6 @@ pdfMake.fonts = {
 }
 
 
-// export function getTimepickerConfig(): TimepickerConfig {
-
-
-//     return Object.assign(new TimepickerConfig(), {
-//         hourStep: 1,
-//         minuteStep: 5,
-//         showMeridian: false,
-//         readonlyInput: false,
-//         mousewheel: true,
-//         showMinutes: true,
-//         showSeconds: false,
-//         labelHours: 'Hours',
-//         labelMinutes: 'Minutes',
-//         labelSeconds: 'Seconds',
-//         allowEmptyTime: true,
-//     });
-// }
-
 @Component({
     selector: 'AppReg',
     templateUrl: 'Application.component.html',
@@ -61,6 +43,7 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     ApplicationForm: FormGroup;
     datePickerConfig: Partial<BsDatepickerConfig>;
     timePickerConfig: Partial<TimepickerConfig>;
+
 
 
     chooseDate: boolean = false;
@@ -86,6 +69,7 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
     birthDateMinMaxInfo: string;
     saving: boolean;
     hideDate: boolean = false;
+    currentLanguage: abp.localization.ILanguageInfo;
     // enabledDates = [
     //     new Date('2021-10-20'),
     //     new Date('2021-10-22'),
@@ -98,6 +82,9 @@ export class ApplicationComponent extends AppComponentBase implements OnInit {
 
         let d = new Date();
         var diff = d.getTimezoneOffset() * -1;
+
+        this.currentLanguage = this.localization.currentLanguage;
+
 
 
         this._services.checkApplicationStartEndDate(moment(d).add(diff, "minutes")).subscribe((result) => {
