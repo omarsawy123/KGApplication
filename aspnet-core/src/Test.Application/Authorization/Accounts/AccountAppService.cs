@@ -12,6 +12,7 @@ using Abp.Domain.Repositories;
 using System.Linq;
 using Test.Settings;
 using Test.Dto.ApplicationStartEndDatesDto;
+using Abp.UI;
 
 namespace Test.Authorization.Accounts
 {
@@ -137,7 +138,10 @@ namespace Test.Authorization.Accounts
 
             #endregion
 
+            try
+            {
 
+           
 
             var smtp = new SmtpClient
             {
@@ -158,7 +162,12 @@ namespace Test.Authorization.Accounts
                 smtp.Send(message);
             }
 
+            }
+            catch (Exception ex)
+            {
 
+                throw new UserFriendlyException("" + ex.Message);
+            }
         }
 
         public bool CheckUserEmailConfirmation(string userMailOrName)

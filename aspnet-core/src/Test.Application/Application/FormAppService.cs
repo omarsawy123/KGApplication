@@ -105,7 +105,7 @@ namespace Test.Forms
         public List<DateDropDownDto> GetAllDatesForDropDown()
         {
 
-            var query =  (from d in _dateRepository.GetAll()
+            var query =   (from d in _dateRepository.GetAll()
                         select new DateDropDownDto
                         {
 
@@ -304,17 +304,17 @@ namespace Test.Forms
 
        
 
-        public string GetStudentBirthDateMinMax()
+        public async Task<string> GetStudentBirthDateMinMax()
         {
-            var date = _settingsRepository.FirstOrDefault(s => s.IsDefault);
+            var date = await _settingsRepository.FirstOrDefaultAsync(s => s.IsDefault);
 
             return "مواليد تاريخ " + date.StudentBirthDateMin.ToShortDateString() + " الي مواليد تاريخ " + date.StudentBirthDateMax.ToShortDateString();
 
         }
 
-        public bool CheckStudentBirthDate(DateTime dateValue)
+        public async Task<bool> CheckStudentBirthDate(DateTime dateValue)
         {
-            var date = _settingsRepository.FirstOrDefault(s => s.IsDefault);
+            var date = await _settingsRepository.FirstOrDefaultAsync(s => s.IsDefault);
 
             return date.StudentBirthDateMin <= dateValue && date.StudentBirthDateMax >= dateValue;
 
