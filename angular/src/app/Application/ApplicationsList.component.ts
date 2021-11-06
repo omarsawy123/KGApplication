@@ -63,6 +63,7 @@ export class ApplicationListComponent extends PagedListingComponentBase<FormDto>
                     year: result.years,
                     month: result.months,
                     day: result.days,
+                    dayName: result.dayName,
                     printType: 1
                 }
             })
