@@ -79,6 +79,7 @@ export class ViewApplicationComponent extends AppComponentBase implements OnInit
             }
             else if (this.form != null) {
                 this.noApplication = false;
+                this.dayName = this.daysArabic[this.dayName];
                 this.cdRef.detectChanges();
             }
         })
@@ -92,6 +93,7 @@ export class ViewApplicationComponent extends AppComponentBase implements OnInit
         htmlToImage.toPng(this.pdfArabicData.nativeElement).then(function (dataUrl) {
 
             var docDefinition = {
+                maxPagesNumber: 1,
                 content: [{
                     image: dataUrl,
                     width: 500,
@@ -119,6 +121,7 @@ export class ViewApplicationComponent extends AppComponentBase implements OnInit
         htmlToImage.toPng(this.pdfArabicData.nativeElement).then(function (dataUrl) {
 
             var docDefinition = {
+                maxPagesNumber: 1,
                 content: [{
                     image: dataUrl,
                     width: 500,
@@ -172,11 +175,11 @@ export class ViewApplicationComponent extends AppComponentBase implements OnInit
                 },
                 {
                     canvas: [{ type: 'line', x1: 0, y1: 5, x2: 595 - 2 * 40, y2: 5, lineWidth: 1 }],
-                    margin: [0, 15, 0, 0]
+                    margin: [0, 10, 0, 0]
 
                 },
                 ],
-                pageMargins: [72, 72, 72, 100]//Left,Top,Right,Bottom
+                pageMargins: [50, 50, 0, 0]//Left,Top,Right,Bottom
             };
 
 
